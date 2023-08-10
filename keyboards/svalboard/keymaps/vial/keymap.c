@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 #include <stdbool.h>
 #include <stdint.h>
+#include "features/achordion.h"
 
 void keyboard_post_init_user(void) {
   // Customise these values if you need to debug the matrix
@@ -55,7 +56,7 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
         /*L3*/ KC_S,            KC_W,           KC_B,           KC_X,           KC_ESC,
         /*L4*/ KC_A,            KC_Q,           KC_LBRC,        KC_Z,           KC_DEL,
 
-        /*Down                  Inner (pad)     Upper (Mode)    O.Upper (nail)  OL (knuckle) Pushthrough*/  
+        /*Down                  Inner (pad)     Upper (Mode)    O.Upper (nail)  OL (knuckle) Pushthrough*/
         /*RT*/ MO(NAS),         KC_SPACE,       TO(FUNC),       KC_BSPC,        KC_LALT,     TG(NAS),
         /*LT*/ KC_LSFT,         KC_ENTER,       MO(KC_NORMAL_HOLD), KC_TAB,         KC_LCTL,     KC_CAPS
     ),
@@ -89,7 +90,7 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
         /*L3*/ KC_2,            KC_AT,          XXXXXXX,        KC_X,           KC_ESC,
         /*L4*/ KC_1,            KC_EXCLAIM,     KC_TILDE,       KC_EQUAL,       KC_DEL,
 
-        /*Down                  Inner           Upper           Outer Upper     Outer Lower  Pushthrough*/  
+        /*Down                  Inner           Upper           Outer Upper     Outer Lower  Pushthrough*/
         /*RT*/ MO(NAS),         KC_SPACE,       TO(FUNC),       KC_BSPC,        KC_LALT,        _______,
         /*LT*/ KC_LSFT,         KC_ENTER,       TO(NORMAL),     KC_TAB,         KC_LCTL,        _______
     ),
@@ -106,7 +107,7 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
         /*L3*/ XXXXXXX,         KC_F4,          XXXXXXX,        KC_F3,          KC_ESC,
         /*L4*/ XXXXXXX,         KC_F2,          XXXXXXX,        KC_F1,          KC_DEL,
 
-             /*Down           Inner           Upper           Outer Upper     Outer Lower  Pushthrough*/  
+             /*Down           Inner           Upper           Outer Upper     Outer Lower  Pushthrough*/
         /*RT*/ MO(NAS),       KC_SPACE,       MO(FUNC_HOLD),       KC_BSPC,        KC_LALT, _______,
         /*LT*/ KC_LSFT,       KC_ENTER,       TO(NORMAL),     KC_TAB,         KC_LCTL,_______
     ),
@@ -123,7 +124,7 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
         /*L3*/ XXXXXXX,         XXXXXXX,        XXXXXXX,        XXXXXXX,     XXXXXXX,
         /*L4*/ _______,      _______,        _______,        _______,       _______,
 
-             /*Down                  Inner           Upper           Outer Upper     Outer Lower  Pushthrough*/  
+             /*Down                  Inner           Upper           Outer Upper     Outer Lower  Pushthrough*/
         /*RT*/ _______,         _______,        _______,        _______,        _______,_______,
         /*LT*/ _______,         _______,        _______,        _______,        _______, _______
     ),
@@ -135,10 +136,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       // If console is enabled, it will print the matrix position and status of each key pressed
 #ifdef CONSOLE_ENABLE
     uprintf("KL: kc: 0x%04X, col: %2u, row: %2u, pressed: %u, time: %5u, int: %u, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
-#endif 
-  switch (keycode) {
-    default:
-      return true;
-  }
+#endif
+  if (!process_achordion(keycode, record)) { return false; }
+  return true;
 };
 
+void matrix_scan_user(void) {
+  achordion_task();
+}
