@@ -28,7 +28,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // matrix code
 const pin_t col_pins[MATRIX_COLS] = MATRIX_COL_PINS;
 const pin_t row_pins[ROWS_PER_HAND] = MATRIX_ROW_PINS;
-static const uint8_t col_pushed_states[MATRIX_COLS] = MATRIX_COL_PUSHED_STATES;
+//static const uint8_t col_pushed_states[MATRIX_COLS] = MATRIX_COL_PUSHED_STATES;
+static const uint8_t col_pushed_states_fingers[MATRIX_COLS] = MATRIX_COL_PUSHED_STATES;
+static const uint8_t col_pushed_states_thumbs[MATRIX_COLS] = MATRIX_COL_PUSHED_STATES_THUMBS;
 
 static inline void setPinOutput_writeLow(pin_t pin) {
     ATOMIC_BLOCK_FORCEON {
@@ -62,18 +64,26 @@ static inline uint8_t readMatrixPin(pin_t pin) {
 bool select_row(uint8_t row) {
     pin_t pin = row_pins[row];
     if (pin != NO_PIN) {
-        setPinOutput_writeHigh(pin);  // this is opposite of most KB matrices
+#ifdef PFET_ROWS
+        setPinOutput_writeLow(pin);  //
         return true;
+#else
+        setPinOutput_writeHigh(pin);  //  this is opposite of most KB matrices
+        return true;
+#endif
     }
     return false;
 }
 
 void unselect_row(uint8_t row) {
     pin_t pin = row_pins[row];
-    if (pin != NO_PIN) {
-        setPinOutput_writeLow(pin);
-    }
+#ifdef PFET_ROWS
+            setPinOutput_writeHigh(pin);
+#else
+            setPinOutput_writeLow(pin);
+#endif
 }
+
 
 static void unselect_rows(void) {
     for (uint8_t x = 0; x < ROWS_PER_HAND; x++) {
@@ -91,18 +101,25 @@ void matrix_read_cols_on_row(matrix_row_t current_matrix[], uint8_t current_row)
     matrix_row_t current_row_value = 0;
 
     select_row(current_row);
-    wait_us(60);
+    // if thumb row use col_pushed_states_thumbs
+
+    wait_us(PREWAIT_US);
 
     // For each col...
     for (uint8_t col_index = 0; col_index < MATRIX_COLS; col_index++) {
-        uint8_t pin_state = (readPin(col_pins[col_index]) == col_pushed_states[col_index]) ? 1 : 0;  // read pin and match pushed_states define
+        uint8_t pin_state;
+        if (current_row == 0) {
+            pin_state = (readPin(col_pins[col_index]) == col_pushed_states_thumbs[col_index]) ? 1 : 0;  // read pin and match pushed_states define
+        } else {
+            pin_state = (readPin(col_pins[col_index]) == col_pushed_states_fingers[col_index]) ? 1 : 0;  // read pin and match pushed_states define
+        }
         // Populate the matrix row with the state of the col pin
         current_row_value |= (pin_state << col_index);
     }
 
     // Unselect row
     unselect_row(current_row);
-    wait_us(60);
+    wait_us(POSTWAIT_US);
 
     // Update the matrix
     current_matrix[current_row] = current_row_value;

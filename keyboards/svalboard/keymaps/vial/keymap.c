@@ -41,7 +41,7 @@ enum layer {
     NAS,
 };
 
-#define NUM_LAYERS 5
+#define NUM_LAYERS 10
 
 const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
  [NORMAL] = LAYOUT(
@@ -108,7 +108,7 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
         /*L4*/ XXXXXXX,         KC_F2,          XXXXXXX,        KC_F1,          KC_DEL,
 
              /*Down           Inner           Upper           Outer Upper     Outer Lower  Pushthrough*/
-        /*RT*/ MO(NAS),       KC_SPACE,       MO(FUNC_HOLD),       KC_BSPC,        KC_LALT, _______,
+        /*RT*/ MO(NAS),       KC_SPACE,       XXXXXXX,       KC_BSPC,        KC_LALT, _______,
         /*LT*/ KC_LSFT,       KC_ENTER,       TO(NORMAL),     KC_TAB,         KC_LCTL,_______
     ),
 
