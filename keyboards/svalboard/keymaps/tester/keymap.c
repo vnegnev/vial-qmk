@@ -33,19 +33,20 @@ enum layer {
     NUM_LAYERS
 };
 
-const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
+/* Declared weak so that it can easily be overridden. */
+__attribute__((weak)) const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
  [NORMAL] = LAYOUT(
              /*Center           North           East            South           West*/
-        /*R1*/ KC_NO,            KC_NO,           KC_NO,           KC_NO,           KC_NO,
-        /*R2*/ KC_NO,            KC_NO,           KC_NO,           KC_NO,           KC_NO,
-        /*R3*/ KC_NO,            KC_NO,           KC_NO,           KC_NO,           KC_NO,
-        /*R4*/ KC_NO,            KC_NO,           KC_NO,           KC_NO,           KC_NO,
-        /*L1*/ KC_NO,            KC_NO,           KC_NO,           KC_NO,           KC_NO,
-        /*L2*/ KC_NO,            KC_NO,           KC_NO,           KC_NO,           KC_NO,
-        /*L3*/ KC_NO,            KC_NO,           KC_NO,           KC_NO,           KC_NO,
-        /*L4*/ KC_NO,            KC_NO,           KC_NO,           KC_NO,           KC_NO,
-        /*RT*/ KC_NO,            KC_NO,           KC_NO,           KC_NO,           KC_NO,   KC_NO,
-        /*LT*/ KC_NO,            KC_NO,           KC_NO,           KC_NO,           KC_NO,   KC_NO
+        /*R1*/ KC_1,            KC_2,           KC_3,           KC_4,           KC_5,
+        /*R2*/ KC_1,            KC_2,           KC_3,           KC_4,           KC_5,
+        /*R3*/ KC_1,            KC_2,           KC_3,           KC_4,           KC_5,
+        /*R4*/ KC_1,            KC_2,           KC_3,           KC_4,           KC_5,
+        /*L1*/ KC_1,            KC_2,           KC_3,           KC_4,           KC_5,
+        /*L2*/ KC_1,            KC_2,           KC_3,           KC_4,           KC_5,
+        /*L3*/ KC_1,            KC_2,           KC_3,           KC_4,           KC_5,
+        /*L4*/ KC_1,            KC_2,           KC_3,           KC_4,           KC_5,
+        /*RT*/ KC_1,            KC_2,           KC_3,           KC_4,           KC_5,   KC_6,
+        /*LT*/ KC_1,            KC_2,           KC_3,           KC_4,           KC_5,   KC_6
         )
 };
 
