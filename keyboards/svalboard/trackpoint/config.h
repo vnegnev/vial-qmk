@@ -42,7 +42,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #else
     #define MATRIX_COL_PUSHED_STATES_THUMBS { 0, 0, 0, 0, 0, 0 }
 #endif
-
 #define DOUBLEDOWN_COL 5 // need a pullup on COL6
 #define PREWAIT_US 90
 #define POSTWAIT_US 90
@@ -58,8 +57,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   //#define SERIAL_PIO_USE_PIO1
   #define PS2_PIO_USE_PIO1
   #define PS2_RESET_PIN GP25
-  // #define PS2_CLOCK_PIN GP24
-  // #define PS2_DATA_PIN GP23
+  #define PS2_CLOCK_PIN GP24
+  #define PS2_DATA_PIN GP23
   #define PS2_MOUSE_SCROLL_DIVISOR_H 4
   #define PS2_MOUSE_SCROLL_DIVISOR_V 4
   #define PS2_MOUSE_ROTATE 270 
