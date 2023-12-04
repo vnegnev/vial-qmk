@@ -179,11 +179,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
      case KC_NORMAL_HOLD:
       if (record->event.pressed) {
-          layer_clear();
-          layer_on(NORMAL_HOLD);
-          SEND_STRING(SS_LCTL(SS_TAP(X_F19)));
+          //layer_clear();
+          //layer_on(NORMAL_HOLD);
+          //SEND_STRING(SS_LCTL(SS_TAP(X_F19)));
       } else {
-          layer_off(NORMAL_HOLD);
+          //layer_off(NORMAL_HOLD);
       }
       return false;
 /*     case KC_FUNC_HOLD:

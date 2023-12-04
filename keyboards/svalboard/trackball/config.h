@@ -24,8 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define PFET_ROWS
 //#define THUMB_DOWN_ACTIVE_DARK
 #define FORCE_NKRO
+#undef PS2_MOUSE_ENABLE
 //#define DEBUG_MATRIX_SCAN_RATE
-//#define PS2_MOUSE_ENABLE // see info.json for duplicate...
 
 // wiring of each half
 //Layout for svalboard v0 (different from lalboard_v2)
@@ -34,7 +34,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //Both Thumbs (these are same as lalboard_v2)
 //OL OU D IL MODE DOUBLE
 //Knuckle Nail Down Pad Up Double
-//#define THUMB_DOWN_ACTIVE_DARK
 
 #define MATRIX_COL_PUSHED_STATES { 0, 0, 1, 0, 0, 0 }
 #ifdef THUMB_DOWN_ACTIVE_DARK
@@ -50,29 +49,80 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define SERIAL_USART_TX_PIN GP0 
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 500 // Timeout window in ms in which the double tap can occur.
-#define FORCE_NKRO
 
-//PS2 Trackpoint Setup
 #ifdef PS2_MOUSE_ENABLE
   //#define SERIAL_PIO_USE_PIO1
   #define PS2_PIO_USE_PIO1
   #define PS2_RESET_PIN GP25
   #define PS2_CLOCK_PIN GP24
   #define PS2_DATA_PIN GP23
-  #define PS2_MOUSE_SCROLL_DIVISOR_H 4
-  #define PS2_MOUSE_SCROLL_DIVISOR_V 4
   #define PS2_MOUSE_ROTATE 270 
-  #define PS2_MOUSE_SCROLL_BTN_MASK 0  // just normal middle button for panning and relative scroll
-  //#define PS2_MOUSE_SCROLL_BTN_MASK (1<<PS2_MOUSE_BTN_MIDDLE) /* Default -- tap to enter relative scroll, hold to use direct scroll*/ 
 #endif
 
-//@manna-harbour's automousekeys
+#if defined(POINTING_DEVICE_ENABLE)
+
+  // Pointing device stuff
+  #define SPLIT_POINTING_ENABLE
+  #define POINTING_DEVICE_COMBINED
+
+  #if defined(POINTING_DEVICE_IS_PIMORONI)
+
+    #define I2C_DRIVER I2CD1
+    #define I2C1_SDA_PIN GP18
+    #define I2C1_SCL_PIN GP19
+    #define PIMORONI_TRACKBALL_SCALE 5
+
+  #endif
+
+  #if (defined(POINTING_DEVICE_IS_PMW3360) || defined(POINTING_DEVICE_IS_PMW3389))
+    // SPI stuff
+    #define USE_FFC_SPI
+
+    #ifdef USE_FFC_SPI
+        #define SPI_DRIVER SPID1
+        // for FFC connector
+        #define SPI_SCK_PIN GP26
+        // Use TX# pin from SPI set.
+        #define SPI_MOSI_PIN GP27
+        // Use RX# pin from SPI set.
+        #define SPI_MISO_PIN GP24
+        // PMW33XX stuff
+        // Use CS# pin from SPI set. Might not actually have to be the CS# pin, since
+        // there's supposed to be support for multiple PMW33XX sensors, with different
+        // CS pins.
+        #define PMW33XX_CS_PIN GP25
+      #else
+    //for Separate Pimoroni Connector
+        #define SPI_DRIVER SPID0
+        #define SPI_SCK_PIN GP18
+        // Use TX# pin from SPI set.
+        #define SPI_MOSI_PIN GP19
+        // Use RX# pin from SPI set.
+        #define SPI_MISO_PIN GP16
+        // PMW33XX stuff
+        // Use CS# pin from SPI set. Might not actually have to be the CS# pin, since
+        // there's supposed to be support for multiple PMW33XX sensors, with different
+        // CS pins.
+        #define PMW33XX_CS_PIN GP17
+    #endif
+    #define PMW33XX_CS_DIVISOR 4
+    #define PMW33XX_CPI 3200
+    //#define POINTING_DEVICE_INVERT_X_RIGHT
+    /* #define ROTATIONAL_TRANSFORM_ANGLE_RIGHT 75 */
+  #endif
+#endif
+
 #if defined MH_AUTO_BUTTONS
   #define MH_AUTO_BUTTONS_LAYER MBO
   #define MH_AUTO_BUTTONS_TIMEOUT 5000
+  #define PS2_MOUSE_SCROLL_BTN_MASK 0 
+  //(1<<PS2_MOUSE_BTN_MIDDLE) // this mask disables the key for non-PS2 purposes
 #endif
 
 //#define USB_POLLING_INTERVAL_MS 1
+
+
+
 
 #define DYNAMIC_KEYMAP_LAYER_COUNT 10
 #define VIAL_TAP_DANCE_ENTRIES 100
@@ -80,5 +130,3 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define VIAL_COMBO_ENTRIES 100
 #define VIAL_KEY_OVERRIDE_ENTRIES 10
 #define DYNAMIC_KEYMAP_MACRO_COUNT 100
-
-
