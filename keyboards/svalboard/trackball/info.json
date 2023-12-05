@@ -34,8 +34,7 @@
   },                                                                                      
   "processor": "RP2040",                                                                  
   "split": {                                                                              
-      "enabled": true,                                                                    
-      "main": "right",                                                                   
+      "enabled": true,                                                                                                                         
       "transport": {                                                                      
           "protocol": "serial",                                                           
           "sync_matrix_state": false,                                                     
@@ -47,9 +46,7 @@
   },
   "ps2": {
     "enabled": false,
-    "driver": "vendor",
-    "clock_pin": "GP24",
-    "data_pin": "GP23"
+    "driver": "vendor"
    },                                                                                         
   "usb": {                                                                                
       "device_version": "0.0.2",                                                          

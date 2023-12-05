@@ -46,9 +46,7 @@
   },
   "ps2": {
     "enabled": true,
-    "driver": "vendor",
-    "clock_pin": "GP24",
-    "data_pin": "GP23"
+    "driver": "vendor"
    },                                                                                         
   "usb": {                                                                                
       "device_version": "0.0.2",                                                          
