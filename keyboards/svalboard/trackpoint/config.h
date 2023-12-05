@@ -26,6 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define FORCE_NKRO
 //#define DEBUG_MATRIX_SCAN_RATE
 //#define PS2_MOUSE_ENABLE // see info.json for duplicate...
+#define EE_HANDS
 
 // wiring of each half
 //Layout for svalboard v0 (different from lalboard_v2)
@@ -51,6 +52,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 500 // Timeout window in ms in which the double tap can occur.
 #define FORCE_NKRO
+//#define EE_HANDS
 
 //PS2 Trackpoint Setup
 #ifdef PS2_MOUSE_ENABLE
