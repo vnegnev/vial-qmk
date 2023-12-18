@@ -34,7 +34,7 @@
   },                                                                                      
   "processor": "RP2040",                                                                  
   "split": {                                                                              
-      "enabled": true,                                                                                                                         
+      "enabled": true,                                                                                         
       "transport": {                                                                      
           "protocol": "serial",                                                           
           "sync_matrix_state": false,                                                     

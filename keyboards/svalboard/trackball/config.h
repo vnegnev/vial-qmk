@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MATRIX_ROWS  10
 #define MATRIX_COLS  6
 #define PFET_ROWS
-//#define THUMB_DOWN_ACTIVE_DARK
+#define EE_HANDS
 #define FORCE_NKRO
 #undef PS2_MOUSE_ENABLE
 //#define DEBUG_MATRIX_SCAN_RATE
@@ -34,6 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //Both Thumbs (these are same as lalboard_v2)
 //OL OU D IL MODE DOUBLE
 //Knuckle Nail Down Pad Up Double
+#define THUMB_DOWN_ACTIVE_DARK
 
 #define MATRIX_COL_PUSHED_STATES { 0, 0, 1, 0, 0, 0 }
 #ifdef THUMB_DOWN_ACTIVE_DARK
@@ -106,8 +107,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         #define PMW33XX_CS_PIN GP17
     #endif
     #define PMW33XX_CS_DIVISOR 4
-    #define PMW33XX_CPI 3200
-    //#define POINTING_DEVICE_INVERT_X_RIGHT
+    #define PMW33XX_CPI 1600 
+    #define POINTING_DEVICE_INVERT_Y
     /* #define ROTATIONAL_TRANSFORM_ANGLE_RIGHT 75 */
   #endif
 #endif
