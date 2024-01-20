@@ -27,6 +27,12 @@ void keyboard_post_init_user(void) {
   //debug_mouse=true;
 }
 
+// in keymap.c:
+void pointing_device_init_user(void) {
+    set_auto_mouse_layer(5); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
+    set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
+}
+
 enum my_keycodes {
   KC_NORMAL_HOLD = SAFE_RANGE,
   KC_FUNC_HOLD
