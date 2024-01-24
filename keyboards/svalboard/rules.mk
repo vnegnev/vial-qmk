@@ -16,6 +16,8 @@ POINTING_DEVICE_DRIVER = pmw3360
 # pimoroni_trackball
 # pmw3389
 
+REPEAT_KEY_ENABLE = yes
+
 ifeq ($(strip $(POINTING_DEVICE_DRIVER)), pimoroni_trackball)
 	OPT_DEFS += -DPOINTING_DEVICE_IS_PIMORONI
 endif

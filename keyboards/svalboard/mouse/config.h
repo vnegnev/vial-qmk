@@ -25,6 +25,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define EE_HANDS
 #define FORCE_NKRO
 #undef PS2_MOUSE_ENABLE
+// #ifndef MH_AUTO_BUTTONS
+// #define MH_AUTO_BUTTONS
+// #endif
+#ifndef POINTING_DEVICE_ENABLE
+#define POINTING_DEVICE_ENABLE
+#endif
+
+// in config.h:
+#define POINTING_DEVICE_AUTO_MOUSE_ENABLE
+// only required if not setting mouse layer elsewhere
+#define AUTO_MOUSE_DEFAULT_LAYER 5
+
 //#define DEBUG_MATRIX_SCAN_RATE
 
 // wiring of each half
@@ -36,14 +48,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //Knuckle Nail Down Pad Up Double
 //#define THUMB_DOWN_ACTIVE_DARK
 
-// in config.h:
-#define POINTING_DEVICE_AUTO_MOUSE_ENABLE
-// only required if not setting mouse layer elsewhere
-#define AUTO_MOUSE_DEFAULT_LAYER 5
-
 #ifndef MATRIX_COL_PUSHED_STATES
 #define MATRIX_COL_PUSHED_STATES { 0, 0, 1, 0, 0, 0 }
 #endif
+#define MATRIX_COL_PUSHED_STATES { 0, 0, 1, 0, 0, 0 }
 #ifndef MATRIX_COL_PUSHED_STATES_THUMBS
   #ifdef THUMB_DOWN_ACTIVE_DARK
       #define MATRIX_COL_PUSHED_STATES_THUMBS { 0, 0, 1, 0, 0, 0 }
@@ -117,8 +125,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     #endif
     #define PMW33XX_CS_DIVISOR 4
     #define PMW33XX_CPI 1600 
-    #define POINTING_DEVICE_INVERT_Y
-    /* #define ROTATIONAL_TRANSFORM_ANGLE_RIGHT 75 */
+    //#define POINTING_DEVICE_INVERT_Y
+    #define ROTATIONAL_TRANSFORM_ANGLE_RIGHT 180
   #endif
 #endif
 

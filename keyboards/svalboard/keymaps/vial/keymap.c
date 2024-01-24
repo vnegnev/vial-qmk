@@ -27,6 +27,14 @@ void keyboard_post_init_user(void) {
   //debug_mouse=true;
 }
 
+// in keymap.c:
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+void pointing_device_init_user(void) {
+    set_auto_mouse_layer(5); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
+    set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
+}
+#endif
+
 enum my_keycodes {
   KC_NORMAL_HOLD = SAFE_RANGE,
   KC_FUNC_HOLD
@@ -131,9 +139,9 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
     
     [MBO] = LAYOUT(
              /*Center           North           East            South           West*/
-        /*R1*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
-        /*R2*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
-        /*R3*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+        /*R1*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN1,       KC_TRNS,
+        /*R2*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN3,       KC_TRNS,
+        /*R3*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN2,       KC_TRNS,
         /*R4*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
         /*L1*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN1,        KC_TRNS,
         /*L2*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN3,        KC_TRNS,
@@ -179,7 +187,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
 
      case KC_NORMAL_HOLD:
-      if (record->event.pressed) {
+/*      if (record->event.pressed) {
           layer_clear();
           layer_on(NORMAL_HOLD);
           SEND_STRING(SS_LCTL(SS_TAP(X_F19)));
@@ -187,6 +195,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           layer_off(NORMAL_HOLD);
       }
       return false;
+      */
+      
 /*     case KC_FUNC_HOLD:
       if (record->event.pressed) {
           layer_clear();

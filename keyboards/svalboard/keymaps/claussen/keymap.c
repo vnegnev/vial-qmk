@@ -27,6 +27,13 @@ void keyboard_post_init_user(void) {
   //debug_mouse=true;
 }
 
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+void pointing_device_init_user(void) {
+    set_auto_mouse_layer(5); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
+    set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
+}
+#endif
+
 enum my_keycodes {
   KC_NORMAL_HOLD = SAFE_RANGE,
   KC_FUNC_HOLD
@@ -45,7 +52,7 @@ enum layer {
 const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
  [NORMAL] = LAYOUT(
              /*Center           North           East            South           West*/
-        /*L4*/ KC_A,            KC_Q,           KC_LBRC,        KC_Z,           KC_DEL,
+        
         /*R1*/ KC_J,            KC_U,           KC_QUOTE,       KC_M,           KC_H,
         /*R2*/ KC_K,            KC_I,           KC_COLON,       KC_COMMA,       KC_Y,
         /*R3*/ KC_L,            KC_O,           KC_LGUI,        KC_DOT,         KC_N,
@@ -54,7 +61,7 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
         /*L1*/ KC_F,            KC_R,           KC_G,           KC_V,           KC_DOUBLE_QUOTE,
         /*L2*/ KC_D,            KC_E,           KC_T,           KC_C,           KC_GRAVE,
         /*L3*/ KC_S,            KC_W,           KC_B,           KC_X,           KC_ESC,
-        
+       /*L4*/ KC_A,            KC_Q,           KC_LBRC,        KC_Z,           KC_DEL, 
 
         /*Down                  Inner (pad)     Upper (Mode)    O.Upper (nail)  OL (knuckle) Pushthrough*/  
         /*RT*/ MO(NAS),         KC_SPACE,       TO(FUNC),       KC_BSPC,        KC_LALT,     TG(NAS),
@@ -180,11 +187,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
      case KC_NORMAL_HOLD:
       if (record->event.pressed) {
-          layer_clear();
-          layer_on(NORMAL_HOLD);
           SEND_STRING(SS_LCTL(SS_TAP(X_F19)));
       } else {
-          layer_off(NORMAL_HOLD);
       }
       return false;
 /*     case KC_FUNC_HOLD:

@@ -50,15 +50,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define SERIAL_USART_TX_PIN GP0 
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 500 // Timeout window in ms in which the double tap can occur.
-#define FORCE_NKRO
-
-//@manna-harbour's automousekeys
-#if defined MH_AUTO_BUTTONS
-  #define MH_AUTO_BUTTONS_LAYER MBO
-  #define MH_AUTO_BUTTONS_TIMEOUT 5000
-#endif
-
-//#define USB_POLLING_INTERVAL_MS 1
 
 #define DYNAMIC_KEYMAP_LAYER_COUNT 10
 #define VIAL_TAP_DANCE_ENTRIES 100
