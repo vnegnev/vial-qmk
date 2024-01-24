@@ -66,7 +66,7 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
 
         /*Down                  Inner (pad)     Upper (Mode)    O.Upper (nail)  OL (knuckle) Pushthrough*/  
         /*RT*/ MO(NAS),         KC_SPACE,       TO(FUNC),       KC_BSPC,        KC_LALT,     TG(NAS),
-        /*LT*/ KC_LSFT,         KC_ENTER,       KC_NORMAL_HOLD, KC_TAB,         KC_LCTL,     KC_CAPS
+        /*LT*/ KC_LSFT,         KC_ENTER,       TO(NORMAL),          KC_TAB,         KC_LCTL,     KC_CAPS
     ),
 
     [NORMAL_HOLD] = LAYOUT(
