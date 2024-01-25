@@ -27,6 +27,7 @@ void keyboard_post_init_user(void) {
   //debug_mouse=true;
 }
 
+// in keymap.c:
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
 void pointing_device_init_user(void) {
     set_auto_mouse_layer(5); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
@@ -37,6 +38,7 @@ void pointing_device_init_user(void) {
 enum my_keycodes {
   KC_NORMAL_HOLD = SAFE_RANGE,
   KC_FUNC_HOLD
+  KC_DRAGSCROLL //not used... yet
 };
 
 enum layer {
@@ -61,11 +63,11 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
         /*L1*/ KC_F,            KC_R,           KC_G,           KC_V,           KC_DOUBLE_QUOTE,
         /*L2*/ KC_D,            KC_E,           KC_T,           KC_C,           KC_GRAVE,
         /*L3*/ KC_S,            KC_W,           KC_B,           KC_X,           KC_ESC,
-       /*L4*/ KC_A,            KC_Q,           KC_LBRC,        KC_Z,           KC_DEL, 
+        /*L4*/ KC_A,            KC_Q,           KC_LBRC,        KC_Z,           KC_DEL,
 
         /*Down                  Inner (pad)     Upper (Mode)    O.Upper (nail)  OL (knuckle) Pushthrough*/  
         /*RT*/ MO(NAS),         KC_SPACE,       TO(FUNC),       KC_BSPC,        KC_LALT,     TG(NAS),
-        /*LT*/ KC_LSFT,         KC_ENTER,       KC_NORMAL_HOLD, KC_TAB,         KC_LCTL,     KC_CAPS
+        /*LT*/ KC_LSFT,         KC_ENTER,       TO(NORMAL),     KC_TAB,         KC_LCTL,     KC_CAPS
     ),
 
     [NORMAL_HOLD] = LAYOUT(
@@ -98,8 +100,8 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
         /*L4*/ KC_1,            KC_EXCLAIM,     KC_TILDE,       KC_EQUAL,       KC_DEL,
 
         /*Down                  Inner           Upper           Outer Upper     Outer Lower  Pushthrough*/  
-        /*RT*/ MO(NAS),         KC_SPACE,       TO(FUNC),       KC_BSPC,      KC_LALT, _______,
-        /*LT*/ KC_LSFT,       KC_ENTER,       KC_NORMAL_HOLD, KC_TAB,         KC_LCTL, _______
+        /*RT*/ MO(NAS),         KC_SPACE,       _______,       KC_BSPC,        KC_LALT, _______,
+        /*LT*/ KC_LSFT,         KC_ENTER,       _______,        KC_TAB,         KC_LCTL, _______
     ),
 
     [FUNC] = LAYOUT(
@@ -115,8 +117,8 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
         /*L4*/ XXXXXXX,         KC_F2,          XXXXXXX,        KC_F1,          KC_DEL,
 
              /*Down                  Inner           Upper           Outer Upper     Outer Lower  Pushthrough*/  
-        /*RT*/ MO(NAS),         KC_SPACE,       TO(FUNC),       KC_BSPC,      KC_LALT, _______,
-        /*LT*/ KC_LSFT,       KC_ENTER,       KC_NORMAL_HOLD, KC_TAB,         KC_LCTL,_______
+        /*RT*/ MO(NAS),         KC_SPACE,       _______,       KC_BSPC,      KC_LALT, _______,
+        /*LT*/ KC_LSFT,       KC_ENTER,         _______, KC_TAB,         KC_LCTL,_______
     ),
 
     [FUNC_HOLD] = LAYOUT(
@@ -138,9 +140,9 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
     
     [MBO] = LAYOUT(
              /*Center           North           East            South           West*/
-        /*R1*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
-        /*R2*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
-        /*R3*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+        /*R1*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN1,       KC_TRNS,
+        /*R2*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN3,       KC_TRNS,
+        /*R3*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN2,       KC_TRNS,
         /*R4*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
         /*L1*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN1,        KC_TRNS,
         /*L2*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN3,        KC_TRNS,
@@ -174,6 +176,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case KC_BTN1:
       case KC_BTN2:
       case KC_BTN3:
+      case KC_DRAGSCROLL:
 //      case KC_WBAK:
 //      case KC_WFWD:
 	break;
@@ -184,21 +187,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #endif
 
   switch (keycode) {
-
-     case KC_NORMAL_HOLD:
-      if (record->event.pressed) {
-          SEND_STRING(SS_LCTL(SS_TAP(X_F19)));
-      } else {
-      }
-      return false;
-/*     case KC_FUNC_HOLD:
-      if (record->event.pressed) {
-          layer_clear();
-          layer_on(FUNC_HOLD);
-      } else {
-          layer_off(FUNC_HOLD);
-      }
-      return false;*/
     default:
       return true;
   }

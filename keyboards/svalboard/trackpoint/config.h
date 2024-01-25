@@ -49,9 +49,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   #define PS2_DATA_PIN GP23
   #define PS2_MOUSE_SCROLL_DIVISOR_H 4
   #define PS2_MOUSE_SCROLL_DIVISOR_V 4
-  #define PS2_MOUSE_ROTATE 90
-  #define PS2_MOUSE_SCROLL_BTN_MASK 0  // just normal middle button for panning and relative scroll
-  //#define PS2_MOUSE_SCROLL_BTN_MASK (1<<PS2_MOUSE_BTN_MIDDLE) /* Default -- tap to enter relative scroll, hold to use direct scroll*/ 
+  #ifndef PS2_MOUSE_ROTATE
+    #define PS2_MOUSE_ROTATE 90
+  #endif
+//  #define PS2_MOUSE_SCROLL_BTN_MASK 0  // just normal middle button for panning and relative scroll
+  #define PS2_MOUSE_SCROLL_BTN_MASK (1<<PS2_MOUSE_BTN_MIDDLE) /* Default -- tap to enter relative scroll, hold to use direct scroll*/ 
 #endif
 
 //@manna-harbour's automousekeys
