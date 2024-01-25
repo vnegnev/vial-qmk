@@ -11,11 +11,7 @@ env CFLAGS+="-D THUMB_DOWN_ACTIVE_DARK=YES PS2_MOUSE_ROTATE=270" make svalboard/
 env CFLAGS+="-D THUMB_DOWN_ACTIVE_DARK=YES PS2_MOUSE_ROTATE=270" make svalboard/trackpoint/left:vial:svalboard_trackpoint_left_270_dark.uf2
 env CFLAGS+="-D THUMB_DOWN_ACTIVE_DARK=YES make svalboard/left:vial:svalboard_left_dark.uf2
 env CFLAGS+="-D THUMB_DOWN_ACTIVE_DARK=YES make svalboard/right:vial:svalboard_right_dark.uf2
-make svalboard/trackpoint/left:vial
-make svalboard/trackpoint/right:vial
 make svalboard/trackball/left:vial
 make svalboard/trackball/right:vial
 make svalboard/mouse/left:vial
 make svalboard/mouse/right:vial
-make svalboard/left:vial
-make svalboard/right:vial
