@@ -4,11 +4,27 @@
 
 Svalboard - Datahand Forever!
 
-Keyboard Maintainer: [morganvenable](https://github.com/morganvenable/) [@morganmoto](https://twitter.com/morganmoto)  
+Keyboard Maintainer: [morganvenable](https://github.com/svalboard/vial-qmk) [@_claussen] on discord
 Hardware Supported: RP2040, Svalboard Alpha 
 Hardware Availability: [Store](https://www.svalboard.com)
 
 Build example for this keyboard (after setting up your build environment):
+for Vial:
+e.g.
+```
+make svalboard/right:vial
+make svalboard/left:vial
+```
+or
+```
+make svalboard/trackpoint/right:vial
+make svalboard/trackpoint/left:vial
+```
+
+--------------------------------------------------------------
+
+For vanilla QMK (not maintained):
+
 ```
 qmk compile -kb svalboard -km default
 ```
@@ -28,5 +44,4 @@ qmk flash --keyboard svalboard --keymap default -bl uf2-split-right
 See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_tools) and the [make instructions](https://docs.qmk.fm/#/getting_started_make_guide) for more information. Brand new to QMK? Start with our [Complete Newbs Guide](https://docs.qmk.fm/#/newbs).
 
 ## Bootloader
-Errata -- you need to hold BOOT while plugging in USB to enter bootloader mode, because early units have a schematic gaffe on the reset button.
-There is a rework available, but it involves desoldering a resistor and running a wire -- not reccommended.
+To enter bootloader mode, simply double tap reset in 500ms or less.  The device will come up as a mass storage device titled RPI-RP2.  Drag the desired UF2 file to the drive and it will immediately reboot and enumerate as Svalboard.

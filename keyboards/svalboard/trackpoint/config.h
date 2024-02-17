@@ -20,25 +20,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* key matrix size */
 // Rows are doubled-up
 
-// wiring of each half
-//Layout for svalboard v0 (different from lalboard_v2)
-//1 2 3 4 5 6
-//S E D N W None
-//Both Thumbs (these are same as lalboard_v2)
-//OL OU D IL MODE DOUBLE
-//Knuckle Nail Down Pad Up Double
-//#define THUMB_DOWN_ACTIVE_DARK
-
-#ifndef MATRIX_COL_PUSHED_STATES
-#define MATRIX_COL_PUSHED_STATES { 0, 0, 1, 0, 0, 0 }
-#endif
-#ifndef MATRIX_COL_PUSHED_STATES_THUMBS
-  #ifdef THUMB_DOWN_ACTIVE_DARK
-      #define MATRIX_COL_PUSHED_STATES_THUMBS { 0, 0, 1, 0, 0, 0 }
-  #else
-      #define MATRIX_COL_PUSHED_STATES_THUMBS { 0, 0, 0, 0, 0, 0 }
-  #endif
-#endif
 
 //PS2 Trackpoint Setup
 #ifdef PS2_MOUSE_ENABLE
