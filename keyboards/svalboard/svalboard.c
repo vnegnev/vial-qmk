@@ -38,7 +38,7 @@ threshold of 1. A reset (x"FF") or set default (x"F6") command will not affect t
   PS2_MOUSE_SEND(0xE2, "pts: 0xE2");
   PS2_MOUSE_SEND(0x81, "pts: 0x81");
   PS2_MOUSE_SEND(0x63, "pts: 0x63");
-  PS2_MOUSE_SEND(0x80, "pts: 0x80");  // 0xFE is default threshold of 1  try low and see what happens
+  PS2_MOUSE_SEND(0x80, "pts: 0xFE");  // 0xFE is default threshold of 1  try low and see what happens
 
 /*
 E2 80 64
@@ -61,7 +61,7 @@ corresponding to approximately a 4 sample average, otherwise the default value i
   PS2_MOUSE_SEND(0xE2, "pts: 0xE2");
   PS2_MOUSE_SEND(0x81, "pts: 0x81");
   PS2_MOUSE_SEND(0x63, "pts: 0x64");
-  PS2_MOUSE_SEND(0x80, "pts: 0x80");  // 0xFE is default threshold of 1  try low and see what happens
+  PS2_MOUSE_SEND(0x80, "pts: 0xFE");  // 0xFE is default threshold of 1  try low and see what happens
 
   // transfer function plateau speed -- default is 0x61
 /*
