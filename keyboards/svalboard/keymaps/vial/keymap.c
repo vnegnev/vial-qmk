@@ -46,7 +46,7 @@ enum layer {
     NAS,
     FUNC,
     FUNC_HOLD,
-    MBO,
+    MBO,  
     NUM_LAYERS
 };
 
