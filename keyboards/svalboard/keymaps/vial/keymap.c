@@ -30,7 +30,7 @@ void keyboard_post_init_user(void) {
 // in keymap.c:
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
 void pointing_device_init_user(void) {
-    set_auto_mouse_layer(19); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
+    set_auto_mouse_layer(15); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
     set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
 }
 #endif
@@ -56,10 +56,6 @@ enum layer {
     L12,
     L13,
     L14,
-    L15,
-    L16,
-    L17,
-    L18,
     MBO,
     NUM_LAYERS
 };
