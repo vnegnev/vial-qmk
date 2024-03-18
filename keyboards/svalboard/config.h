@@ -58,4 +58,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define VIAL_KEY_OVERRIDE_ENTRIES 10
 #define DYNAMIC_KEYMAP_MACRO_COUNT 50
 
-
+#define USB_POLLING_INTERVAL_MS 5
+#define USB_MAX_POWER_CONSUMPTION 500
+#define USB_SUSPEND_WAKEUP_DELAY 500

@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Rows are doubled-up
 
 
+
 //PS2 Trackpoint Setup
 #ifdef PS2_MOUSE_ENABLE
   //#define SERIAL_PIO_USE_PIO1
@@ -37,6 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  #define PS2_MOUSE_SCROLL_BTN_MASK 0  // just normal middle button for panning and relative scroll
   #define PS2_MOUSE_SCROLL_BTN_MASK (1<<PS2_MOUSE_BTN_MIDDLE) /* Default -- tap to enter relative scroll, hold to use direct scroll*/ 
 #endif
+
 
 //@manna-harbour's automousekeys
 #if defined MH_AUTO_BUTTONS
