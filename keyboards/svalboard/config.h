@@ -47,7 +47,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define POSTWAIT_US 90
 
 #define SERIAL_DEBUG
-#define SERIAL_USART_TX_PIN GP0 
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 500 // Timeout window in ms in which the double tap can occur.
 
@@ -61,3 +60,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define USB_POLLING_INTERVAL_MS 5
 #define USB_MAX_POWER_CONSUMPTION 500
 #define USB_SUSPEND_WAKEUP_DELAY 500
+#define SELECT_SOFT_SERIAL_RATE {0}
