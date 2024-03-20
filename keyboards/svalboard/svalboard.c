@@ -20,7 +20,7 @@ void ps2_mouse_init_user() {
   PS2_MOUSE_SEND(0xE2, "pts: 0xE2");
   PS2_MOUSE_SEND(0x47, "pts: 0x47");
   PS2_MOUSE_SEND(0x2C, "pts: 0x2C");
-  PS2_MOUSE_SEND(0x01, "pts: 0x00");  // 01 turns on Z tap, 00 turns off
+  PS2_MOUSE_SEND(0x00, "pts: 0x00");  // 01 turns on Z tap, 00 turns off
 
 
 /*
