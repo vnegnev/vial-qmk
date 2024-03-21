@@ -62,6 +62,33 @@ corresponding to approximately a 4 sample average, otherwise the default value i
   PS2_MOUSE_SEND(0x81, "pts: 0x81");
   PS2_MOUSE_SEND(0x63, "pts: 0x64");
   PS2_MOUSE_SEND(0x80, "pts: 0xFE");  // 0xFE is default threshold of 1  try low and see what happens
+/*
+
+Timing on the double tap on the trackpoint:
+
+E2 80 5E
+E2 81 5E XX
+
+Z Time Constant [zTc]
+ This PtS parameter is the time constant of the running average of Z force.  Its units are in
+ force sampling time units as specified in the Set Sampling Rate command on page 14.
+ This determines how sharp a press has to be to be recognized.  The value of this parameter
+ is 256/n, where n is the desired time constant.  The running average is then calculated with
+ the formula:
+  where A = running average, N = present sample, and X is
+ A=A+(N−A) X
+ 256
+ zTc.  The default value for zTc is x"26" (decimal 38) corresponding to a time constant of
+ 6.7 samples.  This value is not affected by a reset (x"FF") or set default (x"F6") command
+
+*/
+
+
+    PS2_MOUSE_SEND(0xE2, "pts: 0xE2");
+    PS2_MOUSE_SEND(0x81, "pts: 0x81");
+    PS2_MOUSE_SEND(0x5E, "pts: 0x5E");
+    PS2_MOUSE_SEND(0x00, "pts: 0x00");
+
 
   // transfer function plateau speed -- default is 0x61
 /*
@@ -70,6 +97,9 @@ corresponding to approximately a 4 sample average, otherwise the default value i
   PS2_MOUSE_SEND(0x60, "tfups: 0x60");
   PS2_MOUSE_SEND(0xf0, "tfups: 0xf0");
   */
+
+
+
 }
 #endif
 
