@@ -71,7 +71,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     #define PMW33XX_CPI 2000
     #define POINTING_DEVICE_RIGHT
     #define POINTING_DEVICE_INVERT_Y
-    #define ROTATIONAL_TRANSFORM_ANGLE 30
+    #define ROTATIONAL_TRANSFORM_ANGLE 90 
+    //^ rotation is CCW
   #endif
 #endif
 
