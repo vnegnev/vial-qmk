@@ -164,13 +164,33 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 
-#if defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && defined MOUSEKEY_ENABLE
-void mouse_mode(bool);
+#if (defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && defined MOUSEKEY_ENABLE)  || defined(POINTING_DEVICE_AUTO_MOUSE_MH_ENABLE)
 
 static uint16_t mh_auto_buttons_timer;
 extern int tp_buttons; // mousekey button state set in action.c and used in ps2_mouse.c
 
+void mouse_mode(bool);
+
 #endif
+
+#if defined(POINTING_DEVICE_AUTO_MOUSE_MH_ENABLE)
+report_mouse_t pointing_device_task_user(report_mouse_t reportMouse) {
+    print("mh_auto_buttons: called\n");
+    if (reportMouse.x == 0 && reportMouse.y == 0)
+        return reportMouse;
+
+    if (mh_auto_buttons_timer) {
+        mh_auto_buttons_timer = timer_read();
+    } else {
+        mouse_mode(true);
+#if defined CONSOLE_ENABLE
+        print("mh_auto_buttons: on\n");
+#endif
+    }
+    return reportMouse;
+}
+#endif
+
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
@@ -179,14 +199,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     uprintf("KL: kc: 0x%04X, col: %2u, row: %2u, pressed: %u, time: %5u, int: %u, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
 #endif 
 
-#if defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && defined MOUSEKEY_ENABLE
+#if (defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && defined MOUSEKEY_ENABLE) || defined(POINTING_DEVICE_AUTO_MOUSE_MH_ENABLE)
     if (mh_auto_buttons_timer) {
       switch (keycode) {
       case KC_BTN1:
       case KC_BTN2:
       case KC_BTN3:
+      case KC_BTN4:
+      case KC_BTN5:
       case KC_WH_U:
       case KC_WH_D:
+      case KC_WH_R:
+      case KC_WH_L:
 	break;
       default:
 	mouse_mode(false);
@@ -234,7 +258,11 @@ void ps2_mouse_moved_user(report_mouse_t *mouse_report) {
     }
   }
 }
+#endif
 
+
+
+#if (defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && defined MOUSEKEY_ENABLE) || defined(POINTING_DEVICE_AUTO_MOUSE_MH_ENABLE)
 void matrix_scan_user(void) {
   if (mh_auto_buttons_timer && (timer_elapsed(mh_auto_buttons_timer) > MH_AUTO_BUTTONS_TIMEOUT)) {
     if (!tp_buttons) {

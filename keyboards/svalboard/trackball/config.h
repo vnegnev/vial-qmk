@@ -19,7 +19,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #undef PS2_MOUSE_ENABLE
 // in config.h:
-#define POINTING_DEVICE_AUTO_MOUSE_ENABLE
 
 #ifdef PS2_MOUSE_ENABLE
   //#define SERIAL_PIO_USE_PIO1
@@ -35,6 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   // Pointing device stuff
   #define SPLIT_POINTING_ENABLE
   #define POINTING_DEVICE_COMBINED
+  #define POINTING_DEVICE_AUTO_MOUSE_ENABLE
 
   #if defined(POINTING_DEVICE_IS_PIMORONI)
 
@@ -77,7 +77,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         #define PMW33XX_CS_PIN GP17
     #endif
     #define PMW33XX_CS_DIVISOR 4
-    #define PMW33XX_CPI 400 
+    #define PMW33XX_CPI 2000
     #define POINTING_DEVICE_COMBINED
     #define POINTING_DEVICE_INVERT_Y_RIGHT
     //#define POINTING_DEVICE_INVERT_X_RIGHT
@@ -88,7 +88,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #if defined MH_AUTO_BUTTONS
   #define MH_AUTO_BUTTONS_LAYER MBO
   #define MH_AUTO_BUTTONS_TIMEOUT 5000
-  #define PS2_MOUSE_SCROLL_BTN_MASK 0 
-  //(1<<PS2_MOUSE_BTN_MIDDLE) // this mask disables the key for non-PS2 purposes
+//  #define PS2_MOUSE_SCROLL_BTN_MASK 0
+  #define PS2_MOUSE_SCROLL_BTN_MASK (1<<PS2_MOUSE_BTN_MIDDLE) // this mask disables the key for non-PS2 purposes
 #endif
 
