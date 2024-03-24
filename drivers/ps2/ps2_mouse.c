@@ -140,6 +140,7 @@ void ps2_mouse_set_sample_rate(ps2_mouse_sample_rate_t sample_rate) {
 
 /* Note: PS/2 mouse uses counts/mm */
 uint16_t ps2_mouse_get_cpi(void) {
+#if 0
     uint8_t rcv, cpm;
     rcv = ps2_host_send(PS2_MOUSE_STATUS_REQUEST);
     if (rcv == PS2_ACK) {
@@ -149,12 +150,13 @@ uint16_t ps2_mouse_get_cpi(void) {
 
         return (1 << cpm);
     }
-
+#endif
     return 0;
 }
 
 /* Note: PS/2 mouse uses counts/mm */
 void ps2_mouse_set_cpi(uint16_t cpi) {
+#if 0
     switch (cpi) {
         case 1:
             ps2_mouse_set_resolution(PS2_MOUSE_1_COUNT_MM);
@@ -172,6 +174,7 @@ void ps2_mouse_set_cpi(uint16_t cpi) {
             pd_dprintf("ps2_mouse: invalid cpi: %u\n", cpi);
             break;
     }
+#endif
 }
 
 /* ============================= HELPERS ============================ */
