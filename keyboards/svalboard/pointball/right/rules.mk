@@ -1,5 +1,4 @@
 OPT_DEFS += -DINIT_EE_HANDS_RIGHT
-
 # this turns on trackballs including pimoroni
 POINTING_DEVICE_ENABLE = yes
 # this selects trackball driver

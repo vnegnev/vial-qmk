@@ -4,7 +4,7 @@
 QMK_SETTINGS ?= yes
 TAP_DANCE_ENABLE ?= yes
 
-SERIAL_SUFFIX ?= "a1"
+SERIAL_SUFFIX ?= ""
 
 ifeq ($(strip $(TAP_DANCE_ENABLE)), yes)
     OPT_DEFS += -DTAPPING_TERM_PER_KEY
