@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   // Pointing device stuff
   #define SPLIT_POINTING_ENABLE
   #define POINTING_DEVICE_LEFT
+  #define POINTING_DEVICE_AUTO_MOUSE_MH_ENABLE
 
   #if defined(POINTING_DEVICE_IS_PIMORONI)
 
@@ -67,7 +68,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         #define PMW33XX_CS_PIN GP17
     #endif
     #define PMW33XX_CS_DIVISOR 4
-    #define PMW33XX_CPI 400 
+    #define PMW33XX_CPI 2000
     #define POINTING_DEVICE_LEFT
     #define POINTING_DEVICE_INVERT_Y
     #define ROTATIONAL_TRANSFORM_ANGLE 90

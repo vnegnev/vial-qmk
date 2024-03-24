@@ -1,5 +1,4 @@
 #pragma once
-
 #include_next "mcuconf.h"
 
 #if defined(POINTING_DEVICE_IS_PIMORONI)
