@@ -5,3 +5,5 @@ POINTING_DEVICE_DRIVER = pmw3360
 # pimoroni_trackball
 # pmw3389
 MH_AUTO_BUTTONS = yes
+
+EXTRA_SRC += trackball.c

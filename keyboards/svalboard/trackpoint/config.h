@@ -39,6 +39,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   #define PS2_MOUSE_SCROLL_BTN_MASK (1<<PS2_MOUSE_BTN_MIDDLE) /* Default -- tap to enter relative scroll, hold to use direct scroll*/ 
 #endif
 
+#define SPLIT_POINTING_ENABLE
+#define POINTING_DEVICE_LEFT
+#define POINTING_DEVICE_AUTO_MOUSE_MH_ENABLE
 
 //@manna-harbour's automousekeys
 #if defined MH_AUTO_BUTTONS

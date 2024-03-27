@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
+#define MOUSE_EXTENDED_REPORT
+
 #undef PS2_MOUSE_ENABLE
 // in config.h:
 
@@ -34,7 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   // Pointing device stuff
   #define SPLIT_POINTING_ENABLE
   #define POINTING_DEVICE_COMBINED
-  #define POINTING_DEVICE_AUTO_MOUSE_ENABLE
+  #define POINTING_DEVICE_AUTO_MOUSE_MH_ENABLE
 
   #if defined(POINTING_DEVICE_IS_PIMORONI)
 
@@ -62,6 +64,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         // there's supposed to be support for multiple PMW33XX sensors, with different
         // CS pins.
         #define PMW33XX_CS_PIN GP25
+        #define PMW33XX_CS_PIN_RIGHT GP25
       #else
     //for Separate Pimoroni Connector
         #define SPI_DRIVER SPID0
@@ -76,10 +79,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         // CS pins.
         #define PMW33XX_CS_PIN GP17
     #endif
-    #define PMW33XX_CS_DIVISOR 4
-    #define PMW33XX_CPI 2000
-    #define POINTING_DEVICE_COMBINED
     #define POINTING_DEVICE_INVERT_Y_RIGHT
+    #define POINTING_DEVICE_INVERT_Y
     //#define POINTING_DEVICE_INVERT_X_RIGHT
     #define ROTATIONAL_TRANSFORM_ANGLE 90
   #endif
