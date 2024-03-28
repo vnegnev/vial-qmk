@@ -1,5 +1,22 @@
 #include "svalboard.h"
 
+#ifndef SVALBOARD_REENABLE_BOOTMAGIC_LITE
+// This is to override `bootmagic_lite` feature (see docs/feature_bootmagic.md),
+// which can't be turned off in the usual way (via info.json) because setting
+// `VIA_ENABLE` forces `BOOTMAGIC_ENABLE` in `builddefs/common_features.mk`.
+//
+// Obviously if you find this feature useful, you might want to define the
+// SVALBOARD_... gating macro, and then possibly also (re-)define the
+// `"bootmagic": { "matrix": [X,Y] },` in `info.json` to point the matrix at
+// a more useful key than the [0,0] default. Ideally a center key, which is
+// normally ~always present. Because the default (thumb knuckle) means that
+// if you boot with the key pulled out, the eeprom gets cleared.
+
+void bootmagic_lite(void) {
+  // boo!
+}
+#endif
+
 #ifdef PS2_MOUSE_ENABLE
 #include "ps2_mouse.h"
 #include "ps2.h"
