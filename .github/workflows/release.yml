@@ -14,10 +14,8 @@ jobs:
       keyboard: ${{ matrix.keyboard }}
       keymap: ${{ matrix.keymap }}
       side: ${{ matrix.side }}
-      downkey: ${{ matrix.downkey }}
     strategy:
       matrix:
         keyboard: [ svalboard/trackpoint, svalboard, svalboard/trackball ]
         keymap: [ vial ]
-        downkey: [ "_dark", normal ]
         side: [ left, right ]
