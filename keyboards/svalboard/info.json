@@ -1,6 +1,6 @@
 {                                                                                          
   "manufacturer": "Svalboard",                                                            
-  "keyboard_name": "svalboard",                                                           
+  "keyboard_name": "lightly",                                                           
   "maintainer": "MorganVenable",   
   "url": "http://svalboard.com",                                                       
   "bootloader": "rp2040",                                                                 
