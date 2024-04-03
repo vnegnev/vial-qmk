@@ -4,7 +4,8 @@ BOOTLOADER = rp2040
 BOARD = GENERIC_RP_RP2040
 
 CUSTOM_MATRIX = lite
-SRC += matrix.c
+
+SRC += matrix.c $(EXTRA_SRC)
 
 SERIAL_DRIVER = vendor
 # this turns on trackpoint -- dupe in info.json?
