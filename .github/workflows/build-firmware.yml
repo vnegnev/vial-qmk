@@ -12,9 +12,6 @@ on:
       side:
         required: true
         type: string
-      downkey:
-        required: true
-        type: string
 
 jobs:
   build:
@@ -38,16 +35,9 @@ jobs:
       run: |
         KEYBOARD_NAME="${{ inputs.keyboard }}"
         KEYBOARD_NAME="${KEYBOARD_NAME//\//_}"
-        DOWNKEY="${{ inputs.downkey }}"
-        DOWNKEY="${DOWNKEY/normal/}"
         FILE_NAME="${KEYBOARD_NAME}${DOWNKEY}_${{ inputs.side }}_${{ inputs.keymap }}_${{ steps.get_version.outputs.VERSION }}.uf2"
         git config --global --add safe.directory '*'
-        if [[ "_dark" ==  "${DOWNKEY}" ]]; then
-          cdefs="-DTHUMB_DOWN_ACTIVE_DARK"
-        else
-          cdefs=""
-        fi
-        CDEFS="$cdefs" make ${{ inputs.keyboard }}/${{ inputs.side }}:${{ inputs.keymap }}
+        make ${{ inputs.keyboard }}/${{ inputs.side }}:${{ inputs.keymap }}
         mv ${KEYBOARD_NAME}_${{ inputs.side }}_${{ inputs.keymap }}.uf2 "$FILE_NAME"
         echo "::set-output name=file_name::$FILE_NAME"
       shell: bash
