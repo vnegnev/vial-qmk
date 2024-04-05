@@ -43,9 +43,9 @@ enum my_keycodes {
 enum layer {
     NORMAL,
     NORMAL_HOLD,
-    NAS,
     FUNC,
     FUNC_HOLD,
+    NAS,
     L5,
     L6,
     L7,
@@ -96,23 +96,6 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
         /*LT*/ _______,         _______,        _______,        _______,        _______, _______
     ),
 
-    [NAS] = LAYOUT(
-             /*Center           North           East            South           West*/
-        /*R1*/ KC_7,            KC_AMPR,        KC_UNDS,        KC_KP_PLUS,     KC_6,
-        /*R2*/ KC_8,            KC_KP_ASTERISK, KC_COLON,       KC_COMMA,       KC_CIRCUMFLEX,
-        /*R3*/ KC_9,            KC_LPRN,        KC_LGUI,        KC_DOT,         KC_SEMICOLON,
-        /*R4*/ KC_0,            KC_RPRN,        XXXXXXX,        KC_QUES,        KC_RBRC,
-
-        /*L1*/ KC_4,            KC_DOLLAR,      KC_5,           KC_MINUS,       KC_SLASH,
-        /*L2*/ KC_3,            KC_HASH,        KC_GT,          KC_PERCENT,     KC_LT,
-        /*L3*/ KC_2,            KC_AT,          XXXXXXX,        KC_X,           KC_ESC,
-        /*L4*/ KC_1,            KC_EXCLAIM,     KC_TILDE,       KC_EQUAL,       KC_DEL,
-
-        /*Down                  Inner           Upper           Outer Upper     Outer Lower  Pushthrough*/  
-        /*RT*/ MO(NAS),         KC_SPACE,       _______,       KC_BSPC,        KC_LALT, _______,
-        /*LT*/ KC_LSFT,         KC_ENTER,       _______,        KC_TAB,         KC_LCTL, _______
-    ),
-
     [FUNC] = LAYOUT(
              /*Center           North           East            South           West*/
         /*R1*/ KC_HOME,         KC_UP,          KC_RIGHT,       KC_DOWN,        KC_LEFT,
@@ -145,6 +128,23 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
              /*Down                  Inner           Upper           Outer Upper     Outer Lower  Pushthrough*/  
         /*RT*/ _______,         _______,        _______,        _______,        _______,_______,
         /*LT*/ _______,         _______,        _______,        _______,        _______, _______
+    ),
+
+    [NAS] = LAYOUT(
+             /*Center           North           East            South           West*/
+        /*R1*/ KC_7,            KC_AMPR,        KC_UNDS,        KC_KP_PLUS,     KC_6,
+        /*R2*/ KC_8,            KC_KP_ASTERISK, KC_COLON,       KC_COMMA,       KC_CIRCUMFLEX,
+        /*R3*/ KC_9,            KC_LPRN,        KC_LGUI,        KC_DOT,         KC_SEMICOLON,
+        /*R4*/ KC_0,            KC_RPRN,        XXXXXXX,        KC_QUES,        KC_RBRC,
+
+        /*L1*/ KC_4,            KC_DOLLAR,      KC_5,           KC_MINUS,       KC_SLASH,
+        /*L2*/ KC_3,            KC_HASH,        KC_GT,          KC_PERCENT,     KC_LT,
+        /*L3*/ KC_2,            KC_AT,          XXXXXXX,        KC_X,           KC_ESC,
+        /*L4*/ KC_1,            KC_EXCLAIM,     KC_TILDE,       KC_EQUAL,       KC_DEL,
+
+        /*Down                  Inner           Upper           Outer Upper     Outer Lower  Pushthrough*/  
+        /*RT*/ MO(NAS),         KC_SPACE,       _______,       KC_BSPC,        KC_LALT, _______,
+        /*LT*/ KC_LSFT,         KC_ENTER,       _______,        KC_TAB,         KC_LCTL, _______
     ),
     
     [MBO] = LAYOUT(
@@ -233,27 +233,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #endif
 
   switch (keycode) {
-
-     case KC_NORMAL_HOLD:
-/*      if (record->event.pressed) {
-          layer_clear();
-          layer_on(NORMAL_HOLD);
-          SEND_STRING(SS_LCTL(SS_TAP(X_F19)));
-      } else {
-          layer_off(NORMAL_HOLD);
-      }
-      return false;
-      */
-      
-/*     case KC_FUNC_HOLD:
-      if (record->event.pressed) {
-          layer_clear();
-          layer_on(FUNC_HOLD);
-      } else {
-          layer_off(FUNC_HOLD);
-      }
-      return false;*/
-      return false;
     default:
       return true;
   }
