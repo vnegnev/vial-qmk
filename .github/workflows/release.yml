@@ -4,6 +4,9 @@ on:
   push:
     tags:
       - 'v*'
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
 
 permissions: write-all
 
@@ -16,6 +19,6 @@ jobs:
       side: ${{ matrix.side }}
     strategy:
       matrix:
-        keyboard: [ svalboard/trackpoint, svalboard, svalboard/trackball ]
+        keyboard: [ svalboard/trackpoint, svalboard, svalboard/trackball, svalboard/ballpoint, svalboard/pointball ]
         keymap: [ vial ]
         side: [ left, right ]
