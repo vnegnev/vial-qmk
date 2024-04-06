@@ -55,3 +55,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define USB_MAX_POWER_CONSUMPTION 500
 #define USB_SUSPEND_WAKEUP_DELAY 500
 #define SELECT_SOFT_SERIAL_RATE {0}
+
+// Avoid slave-slave deadlock due to missing USB_VBUS_PIN.
+//
+// End result of enabling this: when you plug the keyboard to a finnicky USB
+// hub, KVM, or a machine that boots slowly (ECC RAM), the keyboard no longer
+// needs to be reset to come to life.
+#define SPLIT_WATCHDOG_ENABLE
