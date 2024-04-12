@@ -67,11 +67,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         // CS pins.
         #define PMW33XX_CS_PIN GP17
     #endif
-    #define PMW33XX_CS_DIVISOR 4
-    #define PMW33XX_CPI 2000
-    #define POINTING_DEVICE_LEFT
-    #define POINTING_DEVICE_INVERT_Y
-    #define ROTATIONAL_TRANSFORM_ANGLE 90
+    #define POINTING_DEVICE_INVERT_X
+    #define POINTING_DEVICE_ROTATION_90
   #endif
 #endif
 
@@ -90,10 +87,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   #endif
 //  #define PS2_MOUSE_SCROLL_BTN_MASK 0  // just normal middle button for panning and relative scroll
   #define PS2_MOUSE_SCROLL_BTN_MASK (1<<PS2_MOUSE_BTN_MIDDLE) /* Default -- tap to enter relative scroll, hold to use direct scroll*/ 
-#endif
-
-//@manna-harbour's automousekeys
-#if defined MH_AUTO_BUTTONS
-  #define MH_AUTO_BUTTONS_LAYER MBO
-  #define MH_AUTO_BUTTONS_TIMEOUT 5000
 #endif
