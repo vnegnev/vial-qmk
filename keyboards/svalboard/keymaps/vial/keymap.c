@@ -20,6 +20,47 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdint.h>
 #include "svalboard.h"
 
+#ifdef RGBLIGHT_ENABLE
+#define LC(name, color) const rgblight_segment_t PROGMEM (name)[] = RGBLIGHT_LAYER_SEGMENTS({0, 2, color})
+LC(layer0_colors, HSV_CHARTREUSE); // NORMAL
+LC(layer1_colors, HSV_CHARTREUSE); // NORMAL_HOLD
+LC(layer2_colors, HSV_GOLD); // FUNC
+LC(layer3_colors, HSV_GOLD); // FUNC_HOLD
+LC(layer4_colors, HSV_AZURE); // NAS
+LC(layer5_colors, HSV_AZURE); // would be NAS hold
+LC(layer6_colors, HSV_RED); // maybe 10kp
+LC(layer7_colors, HSV_ORANGE);
+LC(layer8_colors, HSV_PINK);
+LC(layer9_colors, HSV_PURPLE);
+LC(layer10_colors, HSV_MAGENTA);
+LC(layer11_colors, HSV_SPRINGGREEN);
+LC(layer12_colors, HSV_TEAL);
+LC(layer13_colors, HSV_TURQUOISE);
+LC(layer14_colors, HSV_YELLOW);
+LC(layer15_colors, HSV_CORAL); // MBO
+#undef LC
+
+const rgblight_segment_t* const PROGMEM sval_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+    layer0_colors, layer1_colors, layer2_colors, layer3_colors,
+    layer4_colors, layer5_colors, layer6_colors, layer7_colors,
+    layer8_colors, layer9_colors, layer10_colors, layer11_colors,
+    layer12_colors, layer13_colors, layer14_colors, layer15_colors
+);
+
+layer_state_t default_layer_state_set_user(layer_state_t state) {
+  rgblight_set_layer_state(0, layer_state_cmp(state, 0));
+  return state;
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+  for (int i = 0; i < RGBLIGHT_LAYERS; ++i) {
+      rgblight_set_layer_state(i, layer_state_cmp(state, i));
+  }
+  return state;
+}
+
+#endif
+
 #define MH_AUTO_BUTTONS_LAYER MBO
 #define MH_AUTO_BUTTONS_TIMEOUT 5000
 #define PS2_MOUSE_SCROLL_BTN_MASK (1<<PS2_MOUSE_BTN_MIDDLE) // this mask disables the key for non-PS2 purposes
@@ -30,6 +71,10 @@ void keyboard_post_init_user(void) {
   debug_matrix=true;
   //debug_keyboard=true;
   //debug_mouse=true;
+  
+#ifdef RGBLIGHT_ENABLE
+  rgblight_layers = sval_rgb_layers;
+#endif
 }
 
 // in keymap.c:
