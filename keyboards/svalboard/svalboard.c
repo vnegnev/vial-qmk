@@ -12,7 +12,6 @@ void read_eeprom_kb(void) {
     eeconfig_read_kb_datablock(&global_saved_values);
     if (global_saved_values.version < 1) {
         global_saved_values.version = 1;
-        global_saved_values.left_scroll = true;
         global_saved_values.right_dpi_index=2;
         global_saved_values.left_dpi_index=2;
         modified = true;
