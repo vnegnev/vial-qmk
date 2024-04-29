@@ -250,6 +250,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case KC_WH_D:
       case KC_WH_R:
       case KC_WH_L:
+      case KC_LSFT:
+      case KC_RSFT:
+      case KC_LCTL:
+      case KC_RCTL:
+      case KC_LALT:
+      case KC_RALT:
+      case KC_LGUI:
+      case KC_RGUI:
 	break;
       default:
 	mouse_mode(false);
