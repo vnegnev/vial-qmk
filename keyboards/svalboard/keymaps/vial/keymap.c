@@ -185,20 +185,58 @@ void mouse_mode(bool);
 #endif
 
 #if defined(POINTING_DEVICE_AUTO_MOUSE_MH_ENABLE)
+
+#define SCROLL_DIVISOR 20
+
+static int _ds_l_x = 0;
+static int _ds_l_y = 0;
+static int _ds_r_x = 0;
+static int _ds_r_y = 0;
+
 report_mouse_t pointing_device_task_combined_user(report_mouse_t reportMouse1, report_mouse_t reportMouse2) {
     if (reportMouse1.x == 0 && reportMouse1.y == 0 && reportMouse2.x == 0 && reportMouse2.y == 0)
         return pointing_device_combine_reports(reportMouse1, reportMouse2);
 
     if (global_saved_values.left_scroll) {
-        reportMouse1.h = reportMouse1.x;
-        reportMouse1.v = -reportMouse1.y;
+        int div_x;
+        int div_y;
+
+        _ds_l_x += reportMouse1.x;
+        _ds_l_y -= reportMouse1.y;
+
+        div_x = _ds_l_x / SCROLL_DIVISOR;
+        div_y = _ds_l_y / SCROLL_DIVISOR;
+        if (div_x != 0) {
+            reportMouse1.h += div_x;
+            _ds_l_x -= div_x * SCROLL_DIVISOR;
+        }
+
+        if  (div_y != 0) {
+            reportMouse1.v += div_y;
+            _ds_l_y -= div_y * SCROLL_DIVISOR;
+        }
         reportMouse1.x = 0;
         reportMouse1.y = 0;
     }
 
     if (global_saved_values.right_scroll) {
-        reportMouse2.h = reportMouse2.x;
-        reportMouse2.v = -reportMouse2.y;
+        int div_x;
+        int div_y;
+
+        _ds_r_x += reportMouse2.x;
+        _ds_r_y -= reportMouse2.y;
+
+        div_x = _ds_r_x / SCROLL_DIVISOR;
+        div_y = _ds_r_y / SCROLL_DIVISOR;
+        if (div_x != 0) {
+            reportMouse2.h += div_x;
+            _ds_r_x -= div_x * SCROLL_DIVISOR;
+        }
+
+        if  (div_y != 0) {
+            reportMouse2.v += div_y;
+            _ds_r_y -= div_y * SCROLL_DIVISOR;
+        }
         reportMouse2.x = 0;
         reportMouse2.y = 0;
     }
