@@ -98,65 +98,61 @@ void bootmagic_lite(void) {
 #ifdef PS2_MOUSE_ENABLE
 #include "ps2_mouse.h"
 #include "ps2.h"
-#endif
 
-#ifdef PS2_MOUSE_ENABLE
 void ps2_mouse_init_user() {
-  //sensitivity command in fourth byte 00 = 0 multiplier, FF = 2.0 multiplier
+//sensitivity command in fourth byte 00 = 0 multiplier, FF = 2.0 multiplier
   /*
     PS2_MOUSE_SEND(0xE2);
     PS2_MOUSE_SEND(0x81);
     PS2_MOUSE_SEND(0x4A);
     PS2_MOUSE_SEND(0x59);
     */
-
 //Z tap -- doesn't seem to work.  0x01 is on.
+  uint8_t val;
+
+  ps2_mouse_disable_data_reporting();
 
   PS2_MOUSE_SEND(0xE2, "pts: 0xE2");
   PS2_MOUSE_SEND(0x47, "pts: 0x47");
   PS2_MOUSE_SEND(0x2C, "pts: 0x2C");
   PS2_MOUSE_SEND(0x00, "pts: 0x00");  // 01 turns on Z tap, 00 turns off
-
-
-/*
-E2 80 63
-E2 81 63 XX
-Drift Threshold [drift]
-This parameter is used to set the threshold at which drift calibration will occur. Low drift
-thresholds should be used to maximize the effectiveness of the drift calibration algorithms.
-If the difference between the smoothed conversion value and the trial value remains within
-the internal drift threshold, drift calibration will occur. The format of this parameter is
-x"FF"- drift threshold. The default value for drift is x"FE", corresponding to a drift
-threshold of 1. A reset (x"FF") or set default (x"F6") command will not affect this byte.
-
-*/
-  PS2_MOUSE_SEND(0xE2, "pts: 0xE2");
-  PS2_MOUSE_SEND(0x81, "pts: 0x81");
-  PS2_MOUSE_SEND(0x63, "pts: 0x63");
-  PS2_MOUSE_SEND(0x80, "pts: 0x80");  // 0xFE is default threshold of 1  try low and see what happens
+  PS2_MOUSE_RECEIVE("ztap - disable");
 
 /*
-E2 80 64
-E2 81 64 XX
-XY running average drift time constant [xydriftavg]
-This parameter sets the time constant used for the X and Y axis running average routines
-used in conjunction with a high sensitivity TrackPoint circuit for drift control only. This
-directly affects the performance of the drift cancellation algorithms. The least possible
-averaging which allows calibration to take place should be used, otherwise improper
-calibrations will occur during slow cursor movement. The formula used for running
-average is: A = A + (N - A) X where A = running average, N = present sample (lowx or
-256
-lowy, low order l counts), and X is xydriftavg. The default value for xydriftavg will
-depend upon the presence of a jumper between pins 26 and 21 of the TPM754. If the
-jumper is present (noisier sensor), the default value will be x"40" (decimal 64)
-corresponding to approximately a 4 sample average, otherwise the default value is x"80"
-(decimal 128) corresponding to a 2 sample average. This value is not affected by a reset
-(x"FF") or set default (x"F6") command
+From Sprintek:
+
+E2 47 FA 10 - Disable drift correction. - Flips the bit, it should boot enabled.
+
+This was given to us to stop the trackpoint from calibrating at bad times.
+
 */
+
   PS2_MOUSE_SEND(0xE2, "pts: 0xE2");
-  PS2_MOUSE_SEND(0x81, "pts: 0x81");
-  PS2_MOUSE_SEND(0x63, "pts: 0x64");
-  PS2_MOUSE_SEND(0x80, "pts: 0x80");  // 0x80 is default threshold of 2 samples try low and see what happens
+  PS2_MOUSE_SEND(0x80, "pts: 0x80");
+  PS2_MOUSE_SEND(0xFA, "pts: 0xFA");
+  val = ps2_host_recv_response();
+
+  if (~val & 0x10) {
+      PS2_MOUSE_SEND(0xE2, "pts: 0xE2");
+      PS2_MOUSE_SEND(0x47, "pts: 0x47");
+      PS2_MOUSE_SEND(0xFA, "pts: 0xFA");
+      PS2_MOUSE_SEND(0x10, "pts: 0x10");
+      PS2_MOUSE_RECEIVE("drift correction - disable");
+  }
+/*
+
+From Sprintek:
+
+E2 81 92 XX - Set the deadzone - 0x0C default, claimed.
+
+Increase this to get rid of the tail drift.
+
+*/
+//  PS2_MOUSE_SEND(0xE2, "pts: 0xE2");
+//  PS2_MOUSE_SEND(0x81, "pts: 0x81");
+//  PS2_MOUSE_SEND(0x92, "pts: 0x92");
+//  PS2_MOUSE_SEND(0x80, "pts: 0x0C");  // Experiment with this if it isn't enough.
+
 /*
 
 Timing on the double tap on the trackpoint:
@@ -183,18 +179,18 @@ Z Time Constant [zTc]
     PS2_MOUSE_SEND(0x81, "pts: 0x81");
     PS2_MOUSE_SEND(0x5E, "pts: 0x5E");
     PS2_MOUSE_SEND(0x00, "pts: 0x00");
+    PS2_MOUSE_RECEIVE("double Z tap - disable");
 
-
-  // transfer function plateau speed -- default is 0x61
-/*
-  PS2_MOUSE_SEND(0xE2, "tfups: 0xE2");
-  PS2_MOUSE_SEND(0x80, "tfups: 0x80");
-  PS2_MOUSE_SEND(0x60, "tfups: 0x60");
-  PS2_MOUSE_SEND(0xf0, "tfups: 0xf0");
-  */
-
-
+    ps2_mouse_enable_data_reporting();
 
 }
 #endif
+
+void recalibrate_pointer(void) {
+#ifdef PS2_MOUSE_ENABLE
+    PS2_MOUSE_SEND(0xE2, "pts: 0xE2");
+    PS2_MOUSE_SEND(0x51, "pts: 0x51");
+    PS2_MOUSE_RECEIVE("trackpoint - recalibrate");
+#endif
+}
 

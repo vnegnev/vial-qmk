@@ -38,3 +38,4 @@ void decrease_right_dpi(void);
 void set_left_dpi(uint8_t index);
 void set_right_dpi(uint8_t index);
 void write_eeprom_kb(void);
+void recalibrate_pointer(void);

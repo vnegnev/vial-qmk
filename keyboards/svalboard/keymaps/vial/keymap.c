@@ -47,6 +47,7 @@ enum my_keycodes {
   SV_RIGHT_DPI_DEC,
   SV_LEFT_SCROLL_TOGGLE,
   SV_RIGHT_SCROLL_TOGGLE,
+  SV_RECALIBRATE_POINTER,
   KC_NORMAL_HOLD = SAFE_RANGE,
   KC_FUNC_HOLD,
 };
@@ -163,11 +164,11 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
         /*R1*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN1,       KC_TRNS,
         /*R2*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN3,       KC_TRNS,
         /*R3*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN2,       KC_TRNS,
-        /*R4*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+        /*R4*/ SV_RECALIBRATE_POINTER,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
         /*L1*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN1,        KC_TRNS,
         /*L2*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN3,        KC_TRNS,
         /*L3*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN2,        KC_TRNS,
-        /*L4*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+        /*L4*/ SV_RECALIBRATE_POINTER,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
         /*RT*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,   KC_TRNS,
         /*LT*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,   KC_TRNS
         )
@@ -296,6 +297,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case KC_RALT:
       case KC_LGUI:
       case KC_RGUI:
+      case SV_RECALIBRATE_POINTER:
 	break;
       default:
 	mouse_mode(false);
@@ -322,6 +324,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            case SV_RIGHT_SCROLL_TOGGLE:
                 global_saved_values.right_scroll = !global_saved_values.right_scroll;
                 write_eeprom_kb();
+                break;
+           case SV_RECALIBRATE_POINTER:
+                recalibrate_pointer();
            default:
                 break;
         }
