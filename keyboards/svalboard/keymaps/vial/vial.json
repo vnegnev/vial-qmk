@@ -35,6 +35,11 @@
         "shortName": "Scroll\nRight\nToggle",
         "title": "Toggle if the right pointer is scroll or pointer.",
         "name": "SV_RIGHT_SCROLL_TOGGLE"
+      },
+      {
+        "shortName": "Fix\nDrift",
+        "title": "Reset the calibration of the pointing device",
+        "name": "SV_RECALIBRATE_POINTER"
       }
     ],
     "layouts": {
