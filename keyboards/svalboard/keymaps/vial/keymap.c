@@ -259,6 +259,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case KC_RALT:
       case KC_LGUI:
       case KC_RGUI:
+      case SV_RECALIBRATE_POINTER:
 	break;
       default:
 	mouse_mode(false);
