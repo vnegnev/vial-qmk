@@ -16,6 +16,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
+
+// This is used by our user's keymaps for conditionals.
+#define SVALBOARD
+
 //#define FORTY_FOUR_MM_TB
 /* key matrix size */
 // Rows are doubled-up
