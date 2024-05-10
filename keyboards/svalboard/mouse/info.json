@@ -27,10 +27,10 @@
       "rows": ["GP8", "GP7", "GP6", "GP5", "GP4"]                                         
   },                                                                                      
   "mousekey": {                                                                           
-      "delay": 150,                                                                       
-      "interval": 60,                                                                     
-      "max_speed": 5,                                                                     
-      "time_to_max": 7                                                                    
+      "delay": 30,                                                                       
+      "move_delta": 1,
+      "max_speed": 15,                                                                    
+      "time_to_max": 40                                                                    
   },                                                                                      
   "processor": "RP2040",                                                                  
   "split": {                                                                              
