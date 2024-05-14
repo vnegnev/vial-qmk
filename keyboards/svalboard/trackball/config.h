@@ -17,8 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#define MOUSE_EXTENDED_REPORT
-
 #undef PS2_MOUSE_ENABLE
 // in config.h:
 
@@ -28,15 +26,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   #define PS2_RESET_PIN GP25
   #define PS2_CLOCK_PIN GP24
   #define PS2_DATA_PIN GP23
-  #define PS2_MOUSE_ROTATE 270 
 #endif
 
 #if defined(POINTING_DEVICE_ENABLE)
 
   // Pointing device stuff
-  #define SPLIT_POINTING_ENABLE
-  #define POINTING_DEVICE_COMBINED
-  #define POINTING_DEVICE_AUTO_MOUSE_MH_ENABLE
 
   #if defined(POINTING_DEVICE_IS_PIMORONI)
 
@@ -79,14 +73,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         // CS pins.
         #define PMW33XX_CS_PIN GP17
     #endif
-  #ifdef FORTY_FOUR_MM_TB
-    #define POINTING_DEVICE_INVERT_X_RIGHT
-    #define POINTING_DEVICE_INVERT_X
-  #else
-    #define POINTING_DEVICE_INVERT_X_RIGHT
-    #define POINTING_DEVICE_INVERT_X
-    #define POINTING_DEVICE_ROTATION_90_RIGHT
-    #define POINTING_DEVICE_ROTATION_90
-  #endif
   #endif
 #endif

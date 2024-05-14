@@ -42,7 +42,7 @@ report_mouse_t adns5050_get_report(report_mouse_t mouse_report) {
 }
 
 // clang-format off
-const pointing_device_driver_t pointing_device_driver = {
+const pointing_device_driver_t real_device_driver = {
     .init         = adns5050_init,
     .get_report   = adns5050_get_report,
     .set_cpi      = adns5050_set_cpi,
@@ -64,7 +64,7 @@ report_mouse_t pmw3320_get_report(report_mouse_t mouse_report) {
 }
 
 // clang-format off
-const pointing_device_driver_t pointing_device_driver = {
+const pointing_device_driver_t real_device_driver = {
     .init         = pmw3320_init,
     .get_report   = pmw3320_get_report,
     .set_cpi      = pmw3320_set_cpi,
@@ -84,7 +84,7 @@ report_mouse_t adns9800_get_report_driver(report_mouse_t mouse_report) {
 }
 
 // clang-format off
-const pointing_device_driver_t pointing_device_driver = {
+const pointing_device_driver_t real_device_driver = {
     .init       = adns9800_init,
     .get_report = adns9800_get_report_driver,
     .set_cpi    = adns9800_set_cpi,
@@ -107,7 +107,7 @@ report_mouse_t analog_joystick_get_report(report_mouse_t mouse_report) {
 }
 
 // clang-format off
-const pointing_device_driver_t pointing_device_driver = {
+const pointing_device_driver_t real_device_driver = {
     .init       = analog_joystick_init,
     .get_report = analog_joystick_get_report,
     .set_cpi    = NULL,
@@ -220,7 +220,7 @@ report_mouse_t azoteq_iqs5xx_get_report(report_mouse_t mouse_report) {
 }
 
 // clang-format off
-const pointing_device_driver_t pointing_device_driver = {
+const pointing_device_driver_t real_device_driver = {
     .init       = azoteq_iqs5xx_init,
     .get_report = azoteq_iqs5xx_get_report,
     .set_cpi    = azoteq_iqs5xx_set_cpi,
@@ -337,7 +337,7 @@ void cirque_pinnacle_set_cpi(uint16_t cpi) {
 }
 
 // clang-format off
-const pointing_device_driver_t pointing_device_driver = {
+const pointing_device_driver_t real_device_driver = {
     .init       = cirque_pinnacle_init,
     .get_report = cirque_pinnacle_get_report,
     .set_cpi    = cirque_pinnacle_set_cpi,
@@ -361,7 +361,7 @@ report_mouse_t cirque_pinnacle_get_report(report_mouse_t mouse_report) {
 }
 
 // clang-format off
-const pointing_device_driver_t pointing_device_driver = {
+const pointing_device_driver_t real_device_driver = {
     .init       = cirque_pinnacle_init,
     .get_report = cirque_pinnacle_get_report,
     .set_cpi    = cirque_pinnacle_set_scale,
@@ -383,7 +383,7 @@ report_mouse_t paw3204_get_report(report_mouse_t mouse_report) {
 
     return mouse_report;
 }
-const pointing_device_driver_t pointing_device_driver = {
+const pointing_device_driver_t real_device_driver = {
     .init       = paw3204_init,
     .get_report = paw3204_get_report,
     .set_cpi    = paw3204_set_cpi,
@@ -439,7 +439,7 @@ report_mouse_t pimoroni_trackball_get_report(report_mouse_t mouse_report) {
 }
 
 // clang-format off
-const pointing_device_driver_t pointing_device_driver = {
+const pointing_device_driver_t real_device_driver = {
     .init       = pimoroni_trackball_device_init,
     .get_report = pimoroni_trackball_get_report,
     .set_cpi    = pimoroni_trackball_set_cpi,
@@ -484,7 +484,7 @@ report_mouse_t pmw33xx_get_report(report_mouse_t mouse_report) {
 }
 
 // clang-format off
-const pointing_device_driver_t pointing_device_driver = {
+const pointing_device_driver_t real_device_driver = {
     .init       = pmw33xx_init_wrapper,
     .get_report = pmw33xx_get_report,
     .set_cpi    = pmw33xx_set_cpi_wrapper,
@@ -492,15 +492,49 @@ const pointing_device_driver_t pointing_device_driver = {
 };
 // clang-format on
 
+#elif defined(POINTING_DEVICE_DRIVER_ps2_mouse)
+// clang-format off
+const pointing_device_driver_t real_device_driver = {
+    .init         = ps2_mouse_init,
+    .get_report   = ps2_mouse_get_report,
+    .set_cpi      = ps2_mouse_set_cpi,
+    .get_cpi      = ps2_mouse_get_cpi,
+};
+// clang-format on
+
 #else
-__attribute__((weak)) void           pointing_device_driver_init(void) {}
-__attribute__((weak)) report_mouse_t pointing_device_driver_get_report(report_mouse_t mouse_report) {
+__attribute__((weak)) void           fake_pointer_init(void) {}
+__attribute__((weak)) report_mouse_t fake_pointer_get_report(report_mouse_t mouse_report) {
     return mouse_report;
 }
-__attribute__((weak)) uint16_t pointing_device_driver_get_cpi(void) {
+__attribute__((weak)) uint16_t fake_pointer_get_cpi(void) {
     return 0;
 }
-__attribute__((weak)) void pointing_device_driver_set_cpi(uint16_t cpi) {}
+__attribute__((weak)) void fake_pointer_set_cpi(uint16_t cpi) {}
+
+// clang-format off
+const pointing_device_driver_t real_device_driver = {
+    .init       = fake_pointer_init,
+    .get_report = fake_pointer_get_report,
+    .get_cpi    = fake_pointer_get_cpi,
+    .set_cpi    = fake_pointer_set_cpi
+};
+// clang-format on
+
+#endif
+
+__attribute__((weak)) void           pointing_device_driver_init(void) {
+    real_device_driver.init();
+}
+__attribute__((weak)) report_mouse_t pointing_device_driver_get_report(report_mouse_t mouse_report) {
+    return real_device_driver.get_report(mouse_report);
+}
+__attribute__((weak)) uint16_t pointing_device_driver_get_cpi(void) {
+    return real_device_driver.get_cpi();
+}
+__attribute__((weak)) void pointing_device_driver_set_cpi(uint16_t cpi) {
+    real_device_driver.set_cpi(cpi);
+}
 
 // clang-format off
 const pointing_device_driver_t pointing_device_driver = {
@@ -511,4 +545,3 @@ const pointing_device_driver_t pointing_device_driver = {
 };
 // clang-format on
 
-#endif

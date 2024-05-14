@@ -17,3 +17,4 @@ endif
 ifeq ($(strip $(POINTING_DEVICE_DRIVER)), pmw3389)
 	OPT_DEFS += -DPOINTING_DEVICE_IS_PMW3389
 endif
+
