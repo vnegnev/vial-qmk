@@ -15,60 +15,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include QMK_KEYBOARD_H
-#include <stdbool.h>
-#include <stdint.h>
-
-void keyboard_post_init_user(void) {
-  // Customise these values if you need to debug the matrix
-  //debug_enable=true;
-  debug_matrix=true;
-  //debug_keyboard=true;
-  //debug_mouse=true;
-}
-
-// in keymap.c:
-#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
-void pointing_device_init_user(void) {
-    set_auto_mouse_layer(5); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
-    set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
-}
-#endif
-
-enum my_keycodes {
-  KC_NORMAL_HOLD = SAFE_RANGE,
-  KC_FUNC_HOLD
-  KC_DRAGSCROLL //not used... yet
-};
+#include "../keymap_support.c"
 
 enum layer {
     NORMAL,
     NORMAL_HOLD,
-    NAS,
     FUNC,
     FUNC_HOLD,
-    L5,
-    L6,
-    L7,
-    L8,
-    L9,
-    L10,
-    L11,
-    L12,
-    L13,
-    L14,
-    L15,
-    L16,
-    L17,
-    L18,
-    MBO,  
-    NUM_LAYERS
+    NAS,
+    MBO = MH_AUTO_BUTTONS_LAYER,
 };
 
-const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
- [NORMAL] = LAYOUT(
-             /*Center           North           East            South           West*/
-        
+const uint16_t PROGMEM keymaps[DYNAMIC_KEYMAP_LAYER_COUNT][MATRIX_ROWS][MATRIX_COLS] = {
+    [NORMAL] = LAYOUT(
+        /*Center           North           East            South           West*/
+
         /*R1*/ KC_J,            KC_U,           KC_QUOTE,       KC_M,           KC_H,
         /*R2*/ KC_K,            KC_I,           KC_COLON,       KC_COMMA,       KC_Y,
         /*R3*/ KC_L,            KC_O,           KC_LGUI,        KC_DOT,         KC_N,
@@ -79,13 +40,13 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
         /*L3*/ KC_S,            KC_W,           KC_B,           KC_X,           KC_ESC,
         /*L4*/ KC_A,            KC_Q,           KC_LBRC,        KC_Z,           KC_DEL,
 
-        /*Down                  Inner (pad)     Upper (Mode)    O.Upper (nail)  OL (knuckle) Pushthrough*/  
+        /*Down                  Inner (pad)     Upper (Mode)    O.Upper (nail)  OL (knuckle) Pushthrough*/
         /*RT*/ MO(NAS),         KC_SPACE,       TO(FUNC),       KC_BSPC,        KC_LALT,     TG(NAS),
-        /*LT*/ KC_LSFT,         KC_ENTER,       TO(NORMAL),     KC_TAB,         KC_LCTL,     KC_CAPS
-    ),
+        /*LT*/ KC_LSFT,         KC_ENTER,       TO(NORMAL),          KC_TAB,         KC_LCTL,     KC_CAPS
+        ),
 
     [NORMAL_HOLD] = LAYOUT(
-             /*Center           North           East            South           West*/
+        /*Center           North           East            South           West*/
         /*R1*/ KC_LEFT,         KC_WH_L,        XXXXXXX,        KC_MS_L,        LCTL(KC_LEFT),
         /*R2*/ KC_DOWN,         KC_WH_D,        XXXXXXX,        KC_MS_D,        LCTL(KC_DOWN),
         /*R3*/ KC_UP,           KC_WH_U,        XXXXXXX,        KC_MS_U,        LCTL(KC_UP),
@@ -99,27 +60,10 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
         /*Down                  Inner           Upper           Outer Upper     Outer Lower  Pushthrough*/
         /*RT*/ _______,         _______,        _______,        _______,        _______, _______,
         /*LT*/ _______,         _______,        _______,        _______,        _______, _______
-    ),
-
-    [NAS] = LAYOUT(
-             /*Center           North           East            South           West*/
-        /*R1*/ KC_7,            KC_AMPR,        KC_UNDS,        KC_KP_PLUS,     KC_6,
-        /*R2*/ KC_8,            KC_KP_ASTERISK, KC_COLON,       KC_COMMA,       KC_CIRCUMFLEX,
-        /*R3*/ KC_9,            KC_LPRN,        KC_LGUI,        KC_DOT,         KC_SEMICOLON,
-        /*R4*/ KC_0,            KC_RPRN,        XXXXXXX,        KC_QUES,        KC_RBRC,
-
-        /*L1*/ KC_4,            KC_DOLLAR,      KC_5,           KC_MINUS,       KC_SLASH,
-        /*L2*/ KC_3,            KC_HASH,        KC_GT,          KC_PERCENT,     KC_LT,
-        /*L3*/ KC_2,            KC_AT,          XXXXXXX,        KC_X,           KC_ESC,
-        /*L4*/ KC_1,            KC_EXCLAIM,     KC_TILDE,       KC_EQUAL,       KC_DEL,
-
-        /*Down                  Inner           Upper           Outer Upper     Outer Lower  Pushthrough*/  
-        /*RT*/ MO(NAS),         KC_SPACE,       _______,       KC_BSPC,        KC_LALT, _______,
-        /*LT*/ KC_LSFT,         KC_ENTER,       _______,        KC_TAB,         KC_LCTL, _______
-    ),
+        ),
 
     [FUNC] = LAYOUT(
-             /*Center           North           East            South           West*/
+        /*Center           North           East            South           West*/
         /*R1*/ KC_HOME,         KC_UP,          KC_RIGHT,       KC_DOWN,        KC_LEFT,
         /*R2*/ XXXXXXX,         KC_F8,          XXXXXXX,        KC_F7,          KC_END,
         /*R3*/ KC_PSCR,         KC_F10,         KC_LGUI,        KC_F9,          KC_INS,
@@ -130,13 +74,13 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
         /*L3*/ XXXXXXX,         KC_F4,          XXXXXXX,        KC_F3,          KC_ESC,
         /*L4*/ XXXXXXX,         KC_F2,          XXXXXXX,        KC_F1,          KC_DEL,
 
-             /*Down                  Inner           Upper           Outer Upper     Outer Lower  Pushthrough*/  
+        /*Down                  Inner           Upper           Outer Upper     Outer Lower  Pushthrough*/
         /*RT*/ MO(NAS),         KC_SPACE,       _______,       KC_BSPC,      KC_LALT, _______,
         /*LT*/ KC_LSFT,       KC_ENTER,         _______, KC_TAB,         KC_LCTL,_______
-    ),
+        ),
 
     [FUNC_HOLD] = LAYOUT(
-             /*Center           North           East            South           West*/
+        /*Center           North           East            South           West*/
         /*R1*/ KC_LEFT,         LCTL(KC_UP),   LCTL(KC_RIGHT), LCTL(KC_DOWN), LCTL(KC_LEFT),
         /*R2*/ KC_UP,           KC_MS_U,        KC_MS_R,        KC_MS_D,        KC_MS_L,
         /*R3*/ KC_DOWN,         KC_WH_U,        KC_WH_R,        KC_WH_D,        KC_WH_L,
@@ -147,98 +91,40 @@ const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
         /*L3*/ XXXXXXX,         XXXXXXX,        XXXXXXX,        XXXXXXX,     XXXXXXX,
         /*L4*/ _______,      _______,        _______,        _______,       _______,
 
-             /*Down                  Inner           Upper           Outer Upper     Outer Lower  Pushthrough*/  
+        /*Down                  Inner           Upper           Outer Upper     Outer Lower  Pushthrough*/
         /*RT*/ _______,         _______,        _______,        _______,        _______,_______,
         /*LT*/ _______,         _______,        _______,        _______,        _______, _______
-    ),
-    
+        ),
+
+    [NAS] = LAYOUT(
+        /*Center           North           East            South           West*/
+        /*R1*/ KC_7,            KC_AMPR,        KC_UNDS,        KC_KP_PLUS,     KC_6,
+        /*R2*/ KC_8,            KC_KP_ASTERISK, KC_COLON,       KC_COMMA,       KC_CIRCUMFLEX,
+        /*R3*/ KC_9,            KC_LPRN,        KC_LGUI,        KC_DOT,         KC_SEMICOLON,
+        /*R4*/ KC_0,            KC_RPRN,        XXXXXXX,        KC_QUES,        KC_RBRC,
+
+        /*L1*/ KC_4,            KC_DOLLAR,      KC_5,           KC_MINUS,       KC_SLASH,
+        /*L2*/ KC_3,            KC_HASH,        KC_GT,          KC_PERCENT,     KC_LT,
+        /*L3*/ KC_2,            KC_AT,          XXXXXXX,        KC_X,           KC_ESC,
+        /*L4*/ KC_1,            KC_EXCLAIM,     KC_TILDE,       KC_EQUAL,       KC_DEL,
+
+        /*Down                  Inner           Upper           Outer Upper     Outer Lower  Pushthrough*/
+        /*RT*/ MO(NAS),         KC_SPACE,       _______,       KC_BSPC,        KC_LALT, _______,
+        /*LT*/ KC_LSFT,         KC_ENTER,       _______,        KC_TAB,         KC_LCTL, _______
+        ),
+
     [MBO] = LAYOUT(
-             /*Center           North           East            South           West*/
+        /*Center           North           East            South           West*/
         /*R1*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN1,       KC_TRNS,
         /*R2*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN3,       KC_TRNS,
         /*R3*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN2,       KC_TRNS,
-        /*R4*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+        /*R4*/ SV_RECALIBRATE_POINTER,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
         /*L1*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN1,        KC_TRNS,
         /*L2*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN3,        KC_TRNS,
         /*L3*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN2,        KC_TRNS,
-        /*L4*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+        /*L4*/ SV_RECALIBRATE_POINTER,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
         /*RT*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,   KC_TRNS,
         /*LT*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,   KC_TRNS
         )
 
 };
-
-
-#if defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && defined MOUSEKEY_ENABLE
-void mouse_mode(bool);
-
-static uint16_t mh_auto_buttons_timer;
-extern int tp_buttons; // mousekey button state set in action.c and used in ps2_mouse.c
-
-#endif
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-
-      // If console is enabled, it will print the matrix position and status of each key pressed
-#ifdef CONSOLE_ENABLE
-    uprintf("KL: kc: 0x%04X, col: %2u, row: %2u, pressed: %u, time: %5u, int: %u, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
-#endif 
-
-#if defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && defined MOUSEKEY_ENABLE
-    if (mh_auto_buttons_timer) {
-      switch (keycode) {
-      case KC_BTN1:
-      case KC_BTN2:
-      case KC_BTN3:
-      case KC_DRAGSCROLL:
-//      case KC_WBAK:
-//      case KC_WFWD:
-	break;
-      default:
-	mouse_mode(false);
-      }
-    }
-#endif
-
-  switch (keycode) {
-    default:
-      return true;
-  }
-};
-
-#if defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && defined MOUSEKEY_ENABLE
-void ps2_mouse_moved_user(report_mouse_t *mouse_report) {
-  if (mh_auto_buttons_timer) {
-    mh_auto_buttons_timer = timer_read();
-  } else {
-    if (!tp_buttons) {
-      mouse_mode(true);
-  #if defined CONSOLE_ENABLE
-      print("mh_auto_buttons: on\n");
-  #endif
-    }
-  }
-}
-
-void matrix_scan_user(void) {
-  if (mh_auto_buttons_timer && (timer_elapsed(mh_auto_buttons_timer) > MH_AUTO_BUTTONS_TIMEOUT)) {
-    if (!tp_buttons) {
-      mouse_mode(false);
-  #if defined CONSOLE_ENABLE
-      print("mh_auto_buttons: off\n");
-  #endif
-    }
-  }
-}
-
-void mouse_mode(bool on) {
-  if (on) {
-    layer_on(MH_AUTO_BUTTONS_LAYER);
-    mh_auto_buttons_timer = timer_read();
-  } else {
-    layer_off(MH_AUTO_BUTTONS_LAYER);
-    mh_auto_buttons_timer = 0;
-  }
-}
-
-#endif // defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && #defined MOUSEKEY_ENABLE
