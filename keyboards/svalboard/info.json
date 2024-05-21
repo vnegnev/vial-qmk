@@ -1,33 +1,33 @@
-{
-  "manufacturer": "Svalboard",
-  "keyboard_name": "lightly",
-  "maintainer": "MorganVenable",
-  "url": "http://svalboard.com",
-  "bootloader": "rp2040",
-  "diode_direction": "COL2ROW",
-  "features": {
-      "audio": false,
-      "backlight": false,
-      "bluetooth": false,
-      "bootmagic": false,
-      "command": true,
-      "console": true,
-      "extrakey": true,
-      "fauxclicky": false,
-      "midi": false,
-      "mousekey": true,
-      "nkro": true,
-      "rgblight": false,
-      "sleep_led": false,
-      "unicode": false
-  },
-  "height": 10,
-  "matrix_pins": {
-      "cols": ["GP14", "GP13", "GP12", "GP11", "GP10", "GP9"],
-      "rows": ["GP8", "GP7", "GP6", "GP5", "GP4"]
-  },
-  "mousekey": {
-      "delay": 30,
+{                                                                                          
+  "manufacturer": "Svalboard",                                                            
+  "keyboard_name": "lightly",                                                           
+  "maintainer": "MorganVenable",   
+  "url": "http://svalboard.com",                                                       
+  "bootloader": "rp2040",                                                                 
+  "diode_direction": "COL2ROW",                                                           
+  "features": {                                                                           
+      "audio": false,                                                                     
+      "backlight": false,                                                                 
+      "bluetooth": false,                                                                 
+      "bootmagic": false,                                                                 
+      "command": true,                                                                    
+      "console": true,                                                                    
+      "extrakey": true,                                                                   
+      "fauxclicky": false,                                                                
+      "midi": false,                                                                      
+      "mousekey": true,                                                                   
+      "nkro": true,                                                                       
+      "rgblight": true,                                                                  
+      "sleep_led": false,                                                                 
+      "unicode": false                                                                    
+  },                                                                                      
+  "height": 10,                                                                           
+  "matrix_pins": {                                                                        
+      "cols": ["GP14", "GP13", "GP12", "GP11", "GP10", "GP9"],                            
+      "rows": ["GP8", "GP7", "GP6", "GP5", "GP4"]                                         
+  },                                                                                      
+  "mousekey": {                                                                           
+      "delay": 30,                                                                       
       "move_delta": 1,
       "max_speed": 15,
       "time_to_max": 40
