@@ -80,7 +80,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGBLIGHT_LAYERS_RETAIN_VAL
 #define RGBLIGHT_LAYERS DYNAMIC_KEYMAP_LAYER_COUNT
 #define RGBLIGHT_DEFAULT_SAT 0 // white?
-#define RGBLIGHT_LIMIT_VAL 130
+#define RGBLIGHT_LIMIT_VAL 255
 #define RGBLIGHT_DEFAULT_VAL 20
 #define RGBLIGHT_SLEEP // don't annoy when host asleep
 #define RGBLIGHT_MAX_LAYERS 16 //DYNAMIC_KEYMAP_LAYER_COUNT
