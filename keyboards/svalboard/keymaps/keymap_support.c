@@ -61,6 +61,8 @@ enum my_keycodes {
 static uint16_t mh_auto_buttons_timer;
 extern int tp_buttons; // mousekey button state set in action.c and used in ps2_mouse.c
 
+static int last_mouse_x, last_mouse_y;
+
 void mouse_mode(bool);
 
 #endif
@@ -73,6 +75,15 @@ static int _ds_l_x = 0;
 static int _ds_l_y = 0;
 static int _ds_r_x = 0;
 static int _ds_r_y = 0;
+
+void set_mouse_mode_if_far(report_mouse_t reportMouse) {
+	const int min_diff = 5;
+	if (abs(reportMouse.x - last_mouse_x) > min_diff || abs(reportMouse.y - last_mouse_y) > min_diff) {
+	    mouse_mode(true);
+	}
+	last_mouse_x = reportMouse.x;
+	last_mouse_y = reportMouse.y;
+}
 
 report_mouse_t pointing_device_task_combined_user(report_mouse_t reportMouse1, report_mouse_t reportMouse2) {
     report_mouse_t ret_mouse;
@@ -130,7 +141,8 @@ report_mouse_t pointing_device_task_combined_user(report_mouse_t reportMouse1, r
     if (mh_auto_buttons_timer) {
         mh_auto_buttons_timer = timer_read();
     } else {
-        mouse_mode(true);
+        set_mouse_mode_if_far(reportMouse1);
+        set_mouse_mode_if_far(reportMouse2);
 #if defined CONSOLE_ENABLE
         print("task - combined mh_auto_buttons: on\n");
 #endif
@@ -151,7 +163,7 @@ report_mouse_t pointing_device_task_user(report_mouse_t reportMouse) {
     if (mh_auto_buttons_timer) {
         mh_auto_buttons_timer = timer_read();
     } else {
-        mouse_mode(true);
+	set_mouse_mode_if_far(reportMouse);
 #if defined CONSOLE_ENABLE
         print("user - mh_auto_buttons: on\n");
 #endif
@@ -374,7 +386,7 @@ void ps2_mouse_moved_user(report_mouse_t *mouse_report) {
         mh_auto_buttons_timer = timer_read();
     } else {
         if (!tp_buttons) {
-            mouse_mode(true);
+	    set_mouse_mode_if_far(*mouse_report);
 #if defined CONSOLE_ENABLE
             print("ps2 / mh_auto_buttons: on\n");
 #endif
