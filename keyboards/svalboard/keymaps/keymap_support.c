@@ -70,25 +70,6 @@ extern int tp_buttons; // mousekey button state set in action.c and used in ps2_
 // 'on/off' is determined from Bit 7, threshold is determined from Bits 6-0.
 const uint8_t AM_THRESHOLD_DEFAULT = 5, AM_THRESHOLD_MAX = 30;
 
-void set_am_threshold(uint8_t threshold) {
-    if (threshold > 0 && threshold <= AM_THRESHOLD_MAX) {
-	global_saved_values.am_threshold = (global_saved_values.am_threshold & 0x80) | threshold;
-    }
-}
-
-uint8_t get_am_threshold(void) {
-    return global_saved_values.am_threshold & 0x7f;
-}
-
-bool get_am_threshold_en(void) {
-    return (global_saved_values.am_threshold & 0x80) ? true : false;
-}
-
-bool toggle_am_threshold_en(void) {
-    global_saved_values.am_threshold ^= 0x80;
-    return get_am_threshold_en();
-}
-
 static int last_mouse_x = 0, last_mouse_y = 0;
 
 void mouse_mode(bool);
@@ -106,8 +87,7 @@ static int _ds_r_y = 0;
 
 void set_mouse_mode_if_far(report_mouse_t reportMouse) {
     // always turn mouse mode on if am_threshold_en disabled, otherwise check if difference matches threshold
-    uint8_t am_threshold_value = get_am_threshold();
-    if (abs(reportMouse.x - last_mouse_x) > am_threshold_value || abs(reportMouse.y - last_mouse_y) > am_threshold_value || !get_am_threshold_en() ) {
+    if (abs(reportMouse.x - last_mouse_x) > global_saved_values.am_threshold || abs(reportMouse.y - last_mouse_y) > global_saved_values.am_threshold || !global_saved_values.am_threshold_en ) {
 	    mouse_mode(true);
 	}
 	last_mouse_x = reportMouse.x;
@@ -345,19 +325,16 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                 break;
 	    case SV_AM_THR_TOGGLE:
 		// reset to default threshold when turned on
-		if (toggle_am_threshold_en()) set_am_threshold(AM_THRESHOLD_DEFAULT);
+		global_saved_values.am_threshold_en = !global_saved_values.am_threshold_en;
+		if (global_saved_values.am_threshold_en) global_saved_values.am_threshold = AM_THRESHOLD_DEFAULT;
                 break;
-            case SV_AM_THR_P1: {
-		uint8_t am_thr = get_am_threshold();
-		if (am_thr < AM_THRESHOLD_MAX) set_am_threshold(++am_thr);
-		else set_am_threshold(AM_THRESHOLD_MAX); // avoid getting stuck too high
-	        }
+            case SV_AM_THR_P1:
+		if (global_saved_values.am_threshold < AM_THRESHOLD_MAX) ++global_saved_values.am_threshold;
+		else global_saved_values.am_threshold = AM_THRESHOLD_MAX; // avoid getting stuck too high
                 break;
-	    case SV_AM_THR_M1: {
-		uint8_t am_thr = get_am_threshold();
-		if (am_thr > 1) set_am_threshold(--am_thr);
-		else set_am_threshold(1); // avoid getting stuck on 0
-	        }
+	    case SV_AM_THR_M1:
+		if (global_saved_values.am_threshold > 1) --global_saved_values.am_threshold;
+		else global_saved_values.am_threshold = 1; // avoid getting stuck on 0
                 break;
 	    case SV_AM_THR_SAVE:
 		write_eeprom_kb();
