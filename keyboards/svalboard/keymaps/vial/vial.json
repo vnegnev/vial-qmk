@@ -90,6 +90,21 @@
         "shortName": "Sniper\n5x",
         "title": "Slow the cursor 5x more.",
         "name": "SV_SNIPER_5"
+      },
+      {
+        "shortName": "Toggle\nAM thr",
+        "title": "Toggle auto-mouse threshold",
+        "name": "SV_TOGGLE_AM_THR"
+      },
+      {
+        "shortName": "AM thr\n+1",
+        "title": "Auto-mouse threshold +1",
+        "name": "SV_AM_THR_P1"
+      },
+      {
+        "shortName": "AM thr\n-1",
+        "title": "Auto-mouse threshold -1",
+        "name": "SV_AM_THR_M1"
       }
     ],
     "layouts": {
