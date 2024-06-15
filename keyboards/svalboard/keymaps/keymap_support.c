@@ -41,9 +41,29 @@ static uint16_t mh_auto_buttons_timer;
 extern int tp_buttons; // mousekey button state set in action.c and used in ps2_mouse.c
 
 // Auto-mouse threshold enable/disable
-const unsigned AM_THRESHOLD_DEFAULT = 5, AM_THRESHOLD_MAX = 30;
-static bool am_threshold_en = false;
-static unsigned am_threshold = AM_THRESHOLD_DEFAULT;
+// Threshold status is stored in am_threshold. For EEPROM storage efficiency,
+// 'on/off' is determined from Bit 7, threshold is determined from Bits 6-0.
+const uint8_t AM_THRESHOLD_DEFAULT = 5, AM_THRESHOLD_MAX = 30;
+
+void set_am_threshold(uint8_t threshold) {
+    if (threshold > 0 && threshold <= AM_THRESHOLD_MAX) {
+	global_saved_values.am_threshold = (global_saved_values.am_threshold & 0x80) | threshold;
+    }
+}
+
+uint8_t get_am_threshold(void) {
+    return global_saved_values.am_threshold & 0x7f;
+}
+
+bool get_am_threshold_en(void) {
+    return (global_saved_values.am_threshold & 0x80) ? true : false;
+}
+
+bool toggle_am_threshold_en(void) {
+    global_saved_values.am_threshold ^= 0x80;
+    return get_am_threshold_en();
+}
+
 static int last_mouse_x = 0, last_mouse_y = 0;
 
 void mouse_mode(bool);
@@ -63,7 +83,8 @@ static bool left_scroll_hold = false, right_scroll_hold = false;
 
 void set_mouse_mode_if_far(report_mouse_t reportMouse) {
     // always turn mouse mode on if am_threshold_en disabled, otherwise check if difference matches threshold
-    if (abs(reportMouse.x - last_mouse_x) > am_threshold || abs(reportMouse.y - last_mouse_y) > am_threshold || !am_threshold_en) {
+    uint8_t am_threshold_value = get_am_threshold();
+    if (abs(reportMouse.x - last_mouse_x) > am_threshold_value || abs(reportMouse.y - last_mouse_y) > am_threshold_value || !get_am_threshold_en() ) {
 	    mouse_mode(true);
 	}
 	last_mouse_x = reportMouse.x;
@@ -264,9 +285,10 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case SV_SNIPER_3:
             case SV_SNIPER_5:
             case SV_RECALIBRATE_POINTER:
-	    case SV_TOGGLE_AM_THR:
+	    case SV_AM_THR_TOGGLE:
 	    case SV_AM_THR_P1:
             case SV_AM_THR_M1:
+            case SV_AM_THR_SAVE:
                 break;
             default:
 #ifdef CONSOLE_ENABLE
@@ -308,17 +330,25 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                 snipe_x *= 5;
                 snipe_y *= 5;
                 break;
-	    case SV_TOGGLE_AM_THR:
-		am_threshold_en = !am_threshold_en;
+	    case SV_AM_THR_TOGGLE:
 		// reset to default threshold when turned on
-		if (am_threshold_en) am_threshold = AM_THRESHOLD_DEFAULT;
+		if (toggle_am_threshold_en()) set_am_threshold(AM_THRESHOLD_DEFAULT);
                 break;
-	    case SV_AM_THR_P1:
-		if (am_threshold < AM_THRESHOLD_MAX) ++am_threshold;
+            case SV_AM_THR_P1: {
+		uint8_t am_thr = get_am_threshold();
+		if (am_thr < AM_THRESHOLD_MAX) set_am_threshold(++am_thr);
+		else set_am_threshold(AM_THRESHOLD_MAX); // avoid getting stuck too high
+	        }
                 break;
-	    case SV_AM_THR_M1:
-		if (am_threshold > 1) --am_threshold;
+	    case SV_AM_THR_M1: {
+		uint8_t am_thr = get_am_threshold();
+		if (am_thr > 1) set_am_threshold(--am_thr);
+		else set_am_threshold(1); // avoid getting stuck on 0
+	        }
                 break;
+	    case SV_AM_THR_SAVE:
+		write_eeprom_kb();
+		break;
         }
     } else { // key released
         switch (keycode) {

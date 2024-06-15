@@ -94,7 +94,7 @@
       {
         "shortName": "Toggle\nAM thr",
         "title": "Toggle auto-mouse threshold",
-        "name": "SV_TOGGLE_AM_THR"
+        "name": "SV_AM_THR_TOGGLE"
       },
       {
         "shortName": "AM thr\n+1",
@@ -105,6 +105,11 @@
         "shortName": "AM thr\n-1",
         "title": "Auto-mouse threshold -1",
         "name": "SV_AM_THR_M1"
+      },
+      {
+        "shortName": "AM thr\nsave",
+        "title": "Save auto-mouse threshold settings to EEPROM",
+        "name": "SV_AM_THR_SAVE"
       }
     ],
     "layouts": {
