@@ -27,6 +27,7 @@ struct saved_values {
     uint8_t left_dpi_index;
     uint8_t right_dpi_index;
     uint8_t mh_timer_index;
+    uint8_t am_threshold; // encodes both the threshold (bits 7-0) and the on/off status (bit 8)
 };
 
 typedef struct saved_values saved_values_t;

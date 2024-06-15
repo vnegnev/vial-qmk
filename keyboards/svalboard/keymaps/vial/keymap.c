@@ -178,7 +178,7 @@ const uint16_t PROGMEM keymaps[DYNAMIC_KEYMAP_LAYER_COUNT][MATRIX_ROWS][MATRIX_C
         /*L1*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN1,        KC_TRNS,
         /*L2*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN3,        KC_TRNS,
         /*L3*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_BTN2,        KC_TRNS,
-        /*L4*/ SV_RECALIBRATE_POINTER, SV_TOGGLE_AM_THR, SV_AM_THR_P1, KC_TRNS, SV_AM_THR_M1,
+        /*L4*/ SV_RECALIBRATE_POINTER, SV_AM_THR_SAVE, SV_AM_THR_P1, SV_AM_THR_TOGGLE, SV_AM_THR_M1,
         /*RT*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,   KC_TRNS,
         /*LT*/ KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,   KC_TRNS
         )

@@ -21,6 +21,11 @@ void read_eeprom_kb(void) {
         global_saved_values.mh_timer_index = 2;
         modified = true;
     }
+    if (global_saved_values.version < 3) {
+	global_saved_values.version = 3;
+	global_saved_values.am_threshold = 0x05; // disabled; default value of 5
+	modified = true;
+    }
     // As we add versions, just append here.
     if (modified) {
         write_eeprom_kb();
@@ -102,4 +107,3 @@ void bootmagic_lite(void) {
 
 __attribute__((weak)) void recalibrate_pointer(void) {
 }
-
