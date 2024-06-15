@@ -23,7 +23,8 @@ void read_eeprom_kb(void) {
     }
     if (global_saved_values.version < 3) {
 	global_saved_values.version = 3;
-	global_saved_values.am_threshold = 0x05; // disabled; default value of 5
+	global_saved_values.am_threshold_en = false;
+	global_saved_values.am_threshold = 0x05;
 	modified = true;
     }
     // As we add versions, just append here.

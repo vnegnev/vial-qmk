@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "quantum.h"
 
 struct saved_values {
-    uint8_t version;  // Currently at 1,  We assume all new data will be zeroed.
+    uint8_t version;  // Currently at 3,  We assume all new data will be zeroed.
     bool left_scroll :1;
     bool right_scroll :1;
     bool disable_achordion: 1;
@@ -27,7 +27,8 @@ struct saved_values {
     uint8_t left_dpi_index;
     uint8_t right_dpi_index;
     uint8_t mh_timer_index;
-    uint8_t am_threshold; // encodes both the threshold (bits 7-0) and the on/off status (bit 8)
+    bool am_threshold_en: 1;
+    uint8_t am_threshold: 7;
 };
 
 typedef struct saved_values saved_values_t;
