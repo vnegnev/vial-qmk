@@ -51,6 +51,9 @@ enum my_keycodes {
     SV_SNIPER_2,
     SV_SNIPER_3,
     SV_SNIPER_5,
+    SV_TOGGLE_AM_THR,
+    SV_AM_THR_P1,
+    SV_AM_THR_M1,
     KC_NORMAL_HOLD = SAFE_RANGE,
     KC_FUNC_HOLD,
     SV_SAFE_RANGE, // Keycodes over this are safe on Svalboard.
@@ -61,7 +64,11 @@ enum my_keycodes {
 static uint16_t mh_auto_buttons_timer;
 extern int tp_buttons; // mousekey button state set in action.c and used in ps2_mouse.c
 
-static int last_mouse_x, last_mouse_y;
+// Auto-mouse threshold enable/disable
+const unsigned AM_THRESHOLD_DEFAULT = 5, AM_THRESHOLD_MAX = 30;
+static bool am_threshold_en = false;
+static unsigned am_threshold = AM_THRESHOLD_DEFAULT;
+static int last_mouse_x = 0, last_mouse_y = 0;
 
 void mouse_mode(bool);
 
@@ -77,8 +84,8 @@ static int _ds_r_x = 0;
 static int _ds_r_y = 0;
 
 void set_mouse_mode_if_far(report_mouse_t reportMouse) {
-	const int min_diff = 5;
-	if (abs(reportMouse.x - last_mouse_x) > min_diff || abs(reportMouse.y - last_mouse_y) > min_diff) {
+    // always turn mouse mode on if am_threshold_en disabled, otherwise check if difference matches threshold
+    if (abs(reportMouse.x - last_mouse_x) > am_threshold || abs(reportMouse.y - last_mouse_y) > am_threshold || !am_threshold_en) {
 	    mouse_mode(true);
 	}
 	last_mouse_x = reportMouse.x;
@@ -275,6 +282,9 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case SV_SNIPER_3:
             case SV_SNIPER_5:
             case SV_RECALIBRATE_POINTER:
+	    case SV_TOGGLE_AM_THR:
+	    case SV_AM_THR_P1:
+            case SV_AM_THR_M1:
                 break;
             default:
 #ifdef CONSOLE_ENABLE
@@ -309,6 +319,17 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                 snipe_div *= 5;
                 snipe_x *= 5;
                 snipe_y *= 5;
+                break;
+	    case SV_TOGGLE_AM_THR:
+		am_threshold_en = !am_threshold_en;
+		// reset to default threshold when turned on
+		if (am_threshold_en) am_threshold = AM_THRESHOLD_DEFAULT;
+                break;
+	    case SV_AM_THR_P1:
+		if (am_threshold < AM_THRESHOLD_MAX) ++am_threshold;
+                break;
+	    case SV_AM_THR_M1:
+		if (am_threshold > 1) --am_threshold;
                 break;
         }
     }
