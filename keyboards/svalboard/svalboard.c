@@ -18,7 +18,7 @@ void read_eeprom_kb(void) {
     }
     if (global_saved_values.version < 2) {
         global_saved_values.version = 2;
-        global_saved_values.mh_timer_index = 2;
+        global_saved_values.mh_timer_index = 0; // nonzero values = short timeout
         modified = true;
     }
     if (global_saved_values.version < 3) {

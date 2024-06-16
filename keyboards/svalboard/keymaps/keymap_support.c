@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define MH_AUTO_BUTTONS_LAYER (DYNAMIC_KEYMAP_LAYER_COUNT - 1)
 
-const uint16_t mh_timer_choices[] = { 300, 500, -1}; // -1 is infinite.
+const uint16_t mh_timer_choices[] = {-1, 300, 500, 2000}; // -1 = very long timeout
 
 #define PS2_MOUSE_SCROLL_BTN_MASK (1<<PS2_MOUSE_BTN_MIDDLE) // this mask disables the key for non-PS2 purposes
 
@@ -204,7 +204,8 @@ report_mouse_t pointing_device_task_user(report_mouse_t reportMouse) {
 #endif
 
 void mh_change_timeouts(void) {
-    if (sizeof(mh_timer_choices)/sizeof(int16_t) - 1 <= global_saved_values.mh_timer_index) {
+    mouse_mode(false);  // precaution to avoid race condition with timer
+    if (sizeof(mh_timer_choices)/sizeof(uint16_t) - 1 <= global_saved_values.mh_timer_index) {
         global_saved_values.mh_timer_index = 0;
     } else {
         global_saved_values.mh_timer_index++;
@@ -260,7 +261,13 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
     uprintf("KL: kc: 0x%04X, col: %2u, row: %2u, pressed: %u, time: %5u, int: %u, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
 #endif
 
+    // When auto-mouse layer timer is enabled, most keys will immediately
+    // disable mouse mode and their vial actions will not be run, except those
+    // in the case statement below
 #if (defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && defined MOUSEKEY_ENABLE) || defined(POINTING_DEVICE_AUTO_MOUSE_MH_ENABLE)
+    // If auto-mouse layer timeout is off, process every key and do not exit the
+    // mouse layer
+    // if (mh_auto_buttons_timer && global_saved_values.mh_timer_index != 0) {
     if (mh_auto_buttons_timer) {
         switch (keycode) {
             case KC_BTN1:
@@ -280,6 +287,9 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case KC_RALT:
             case KC_LGUI:
             case KC_RGUI:
+	    // No case for other keys people might potentially put on the
+	    // mouse layer in conjunction with auto-mouse layer timeout
+            case SV_MH_CHANGE_TIMEOUTS:
             case SV_SNIPER_2:
             case SV_SNIPER_3:
             case SV_SNIPER_5:
@@ -432,24 +442,32 @@ void matrix_scan_kb(void) {
         achordion_task();
     }
 
-    if (mh_timer_choices[global_saved_values.mh_timer_index] < 0) {
+    if (global_saved_values.mh_timer_index == 0) {
+	// never timeout from auto-mouse layer
         return;
     }
-    if (mh_auto_buttons_timer && (timer_elapsed(mh_auto_buttons_timer) > mh_timer_choices[global_saved_values.mh_timer_index])) {
+
+    // check auto-mouse layer timeout
+    uint16_t time_elapsed = timer_elapsed(mh_auto_buttons_timer);
+    if (mh_auto_buttons_timer && time_elapsed > mh_timer_choices[global_saved_values.mh_timer_index]) {
         if (!tp_buttons) {
             mouse_mode(false);
 #if defined CONSOLE_ENABLE
-            print("matrix - mh_auto_buttons: off\n");
+            uprintf("matrix - mh_auto_buttons: off timer: %d elapsed: %d\n", mh_auto_buttons_timer, time_elapsed);
 #endif
         }
     }
+
+    // WARNING: will only run when the auto-mouse layer timeout is active - is
+    // this what we want?
     matrix_scan_user();
 }
 
 void mouse_mode(bool on) {
     if (on) {
         layer_on(MH_AUTO_BUTTONS_LAYER);
-        mh_auto_buttons_timer = timer_read();
+	// only save timer value if auto-buttons timer is actually on
+	mh_auto_buttons_timer = timer_read();
     } else {
         layer_off(MH_AUTO_BUTTONS_LAYER);
         mh_auto_buttons_timer = 0;
