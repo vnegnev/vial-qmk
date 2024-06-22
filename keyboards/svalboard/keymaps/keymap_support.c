@@ -318,9 +318,11 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                 break;
             case SV_LEFT_SCROLL_TOGGLE:
                 global_saved_values.left_scroll = !global_saved_values.left_scroll;
+                write_eeprom_kb();
                 break;
             case SV_RIGHT_SCROLL_TOGGLE:
                 global_saved_values.right_scroll = !global_saved_values.right_scroll;
+                write_eeprom_kb();
                 break;
             case SV_RECALIBRATE_POINTER:
                 recalibrate_pointer();
