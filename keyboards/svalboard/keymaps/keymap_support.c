@@ -35,6 +35,13 @@ void pointing_device_init_user(void) {
 }
 #endif
 
+void print_rgb(bool clear) {
+    for (uint8_t k=0; k<16; ++k){
+        uprintf("LL%uS%d\n", k, rgblight_get_layer_state(k));
+        rgblight_set_layer_state(k, false);
+    }
+}
+
 enum my_keycodes {
     SV_LEFT_DPI_INC = QK_KB_0,
     SV_LEFT_DPI_DEC,
@@ -341,10 +348,14 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case SV_AM_THR_P1:
 		if (global_saved_values.am_threshold < AM_THRESHOLD_MAX) ++global_saved_values.am_threshold;
 		else global_saved_values.am_threshold = AM_THRESHOLD_MAX; // avoid getting stuck too high
+		print_rgb(true); // also clears all other layers
+		rgblight_set_layer_state(8, true);
                 break;
 	    case SV_AM_THR_M1:
 		if (global_saved_values.am_threshold > 1) --global_saved_values.am_threshold;
 		else global_saved_values.am_threshold = 1; // avoid getting stuck on 0
+		print_rgb(true); // also clears all other layers
+		rgblight_set_layer_state(5, true);
                 break;
 	    case SV_AM_THR_SAVE:
 		write_eeprom_kb();
@@ -469,7 +480,16 @@ void mouse_mode(bool on) {
 	// only save timer value if auto-buttons timer is actually on
 	mh_auto_buttons_timer = timer_read();
     } else {
+
+	if (rgblight_is_enabled()) {
+	    //rgblight_sethsv_at(HSV_WHITE, 1);
+	    uprintf("HSV 1 222\n");
+	}
         layer_off(MH_AUTO_BUTTONS_LAYER);
+	if (rgblight_is_enabled()) {
+	    //rgblight_sethsv_at(HSV_WHITE, 0);
+	    uprintf("HSV 0 111\n");
+	}
         mh_auto_buttons_timer = 0;
     }
 }
