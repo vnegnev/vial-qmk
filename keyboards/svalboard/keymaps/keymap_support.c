@@ -42,6 +42,8 @@ enum my_keycodes {
     SV_RIGHT_DPI_DEC,
     SV_LEFT_SCROLL_TOGGLE,
     SV_RIGHT_SCROLL_TOGGLE,
+    SV_LEFT_SCROLL_HOLD,
+    SV_RIGHT_SCROLL_HOLD,
     SV_RECALIBRATE_POINTER,
     SV_MH_CHANGE_TIMEOUTS,
     SV_CAPS_WORD,
@@ -280,6 +282,10 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case KC_RALT:
             case KC_LGUI:
             case KC_RGUI:
+            case SV_LEFT_SCROLL_TOGGLE:
+            case SV_RIGHT_SCROLL_TOGGLE:
+            case SV_LEFT_SCROLL_HOLD:
+            case SV_RIGHT_SCROLL_HOLD:
             case SV_SNIPER_2:
             case SV_SNIPER_3:
             case SV_SNIPER_5:
@@ -296,8 +302,14 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                 mouse_mode(false);
         }
     }
-    if (record->event.pressed) {
+    if (record->event.pressed) { // key pressed
         switch (keycode) {
+            case SV_LEFT_SCROLL_HOLD:
+                global_saved_values.left_scroll = !global_saved_values.left_scroll;
+                break;
+            case SV_RIGHT_SCROLL_HOLD:
+                global_saved_values.right_scroll = !global_saved_values.right_scroll;
+                break;
             case SV_TOGGLE_23_67:
                 layer_on(2);
                 layer_on(3);
@@ -340,8 +352,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
 		write_eeprom_kb();
 		break;
         }
-    }
-    if (!record->event.pressed) {
+    } else { // key released
         switch (keycode) {
             case SV_LEFT_DPI_INC:
                 increase_left_dpi();
@@ -362,6 +373,12 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case SV_RIGHT_SCROLL_TOGGLE:
                 global_saved_values.right_scroll = !global_saved_values.right_scroll;
                 write_eeprom_kb();
+                break;
+	    case SV_LEFT_SCROLL_HOLD:
+                global_saved_values.left_scroll = !global_saved_values.left_scroll;
+                break;
+	    case SV_RIGHT_SCROLL_HOLD:
+                global_saved_values.right_scroll = !global_saved_values.right_scroll;
                 break;
             case SV_RECALIBRATE_POINTER:
                 recalibrate_pointer();
