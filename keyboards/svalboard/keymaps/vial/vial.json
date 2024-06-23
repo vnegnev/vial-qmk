@@ -37,6 +37,16 @@
         "name": "SV_RIGHT_SCROLL_TOGGLE"
       },
       {
+        "shortName": "Scroll\nLeft\nHold",
+        "title": "Hold to switch the left pointer between scroll and pointer.",
+        "name": "SV_LEFT_SCROLL_HOLD"
+      },
+      {
+        "shortName": "Scroll\nRight\nHold",
+        "title": "Hold to switch the right pointer between scroll and pointer.",
+        "name": "SV_RIGHT_SCROLL_HOLD"
+      },
+      {
         "shortName": "Fix\nDrift",
         "title": "Reset the calibration of the pointing device",
         "name": "SV_RECALIBRATE_POINTER"
