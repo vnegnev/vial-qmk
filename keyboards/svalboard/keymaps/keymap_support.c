@@ -53,12 +53,14 @@ static int _ds_l_y = 0;
 static int _ds_r_x = 0;
 static int _ds_r_y = 0;
 
+static bool left_scroll_hold = false, right_scroll_hold = false;
+
 report_mouse_t pointing_device_task_combined_user(report_mouse_t reportMouse1, report_mouse_t reportMouse2) {
     report_mouse_t ret_mouse;
     if (reportMouse1.x == 0 && reportMouse1.y == 0 && reportMouse2.x == 0 && reportMouse2.y == 0)
         return pointing_device_combine_reports(reportMouse1, reportMouse2);
 
-    if (global_saved_values.left_scroll) {
+    if (global_saved_values.left_scroll || left_scroll_hold) {
         int div_x;
         int div_y;
 
@@ -82,7 +84,7 @@ report_mouse_t pointing_device_task_combined_user(report_mouse_t reportMouse1, r
         reportMouse1.y = 0;
     }
 
-    if (global_saved_values.right_scroll) {
+    if (global_saved_values.right_scroll || right_scroll_hold) {
         int div_x;
         int div_y;
 
@@ -257,10 +259,10 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) { // key pressed
         switch (keycode) {
             case SV_LEFT_SCROLL_HOLD:
-                global_saved_values.left_scroll = !global_saved_values.left_scroll;
+		left_scroll_hold = true;
                 break;
             case SV_RIGHT_SCROLL_HOLD:
-                global_saved_values.right_scroll = !global_saved_values.right_scroll;
+		right_scroll_hold = true;
                 break;
             case SV_TOGGLE_23_67:
                 layer_on(2);
@@ -311,10 +313,10 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                 write_eeprom_kb();
                 break;
 	    case SV_LEFT_SCROLL_HOLD:
-                global_saved_values.left_scroll = !global_saved_values.left_scroll;
+		left_scroll_hold = false;
                 break;
 	    case SV_RIGHT_SCROLL_HOLD:
-                global_saved_values.right_scroll = !global_saved_values.right_scroll;
+		right_scroll_hold = false;
                 break;
             case SV_RECALIBRATE_POINTER:
                 recalibrate_pointer();
