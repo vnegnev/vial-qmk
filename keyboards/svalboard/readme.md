@@ -5,7 +5,7 @@
 Svalboard - Datahand Forever!
 
 Keyboard Maintainer: [morganvenable](https://github.com/svalboard/vial-qmk) [@_claussen] on discord
-Hardware Supported: RP2040, Svalboard Alpha
+Hardware Supported: RP2040, Svalboard Alpha, Svalboard Lightly
 Hardware Availability: [Store](https://www.svalboard.com)
 
 Build example for this keyboard (after setting up your build environment):
