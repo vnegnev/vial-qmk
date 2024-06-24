@@ -37,6 +37,9 @@ enum my_keycodes {
     SV_SNIPER_2,
     SV_SNIPER_3,
     SV_SNIPER_5,
+    SV_LEFT_SCROLL_HOLD,
+    SV_RIGHT_SCROLL_HOLD,
+    // New keycodes should go here, to avoid breaking existing keymaps - order must match vial.json
     KC_NORMAL_HOLD = SAFE_RANGE,
     KC_FUNC_HOLD,
     SV_SAFE_RANGE, // Keycodes over this are safe on Svalboard.

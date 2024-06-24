@@ -80,6 +80,16 @@
         "shortName": "Sniper\n5x",
         "title": "Slow the cursor 5x more.",
         "name": "SV_SNIPER_5"
+      },
+      {
+        "shortName": "Scroll\nLeft\nHold",
+        "title": "Hold to make the left pointing device scroll",
+        "name": "SV_LEFT_SCROLL_HOLD"
+      },
+      {
+        "shortName": "Scroll\nRight\nHold",
+        "title": "Hold to make the right pointing device scroll",
+        "name": "SV_RIGHT_SCROLL_HOLD"
       }
     ],
     "layouts": {

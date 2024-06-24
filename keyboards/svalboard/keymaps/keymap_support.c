@@ -34,6 +34,7 @@ void pointing_device_init_user(void) {
 }
 #endif
 
+
 #if (defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && defined MOUSEKEY_ENABLE)  || defined(POINTING_DEVICE_AUTO_MOUSE_MH_ENABLE)
 
 static uint16_t mh_auto_buttons_timer;
@@ -52,12 +53,14 @@ static int _ds_l_y = 0;
 static int _ds_r_x = 0;
 static int _ds_r_y = 0;
 
+static bool left_scroll_hold = false, right_scroll_hold = false;
+
 report_mouse_t pointing_device_task_combined_user(report_mouse_t reportMouse1, report_mouse_t reportMouse2) {
     report_mouse_t ret_mouse;
     if (reportMouse1.x == 0 && reportMouse1.y == 0 && reportMouse2.x == 0 && reportMouse2.y == 0)
         return pointing_device_combine_reports(reportMouse1, reportMouse2);
 
-    if (global_saved_values.left_scroll) {
+    if (global_saved_values.left_scroll || left_scroll_hold) {
         int div_x;
         int div_y;
 
@@ -81,7 +84,7 @@ report_mouse_t pointing_device_task_combined_user(report_mouse_t reportMouse1, r
         reportMouse1.y = 0;
     }
 
-    if (global_saved_values.right_scroll) {
+    if (global_saved_values.right_scroll || right_scroll_hold) {
         int div_x;
         int div_y;
 
@@ -237,6 +240,10 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case KC_RALT:
             case KC_LGUI:
             case KC_RGUI:
+            case SV_LEFT_SCROLL_TOGGLE:
+            case SV_RIGHT_SCROLL_TOGGLE:
+            case SV_LEFT_SCROLL_HOLD:
+            case SV_RIGHT_SCROLL_HOLD:
             case SV_SNIPER_2:
             case SV_SNIPER_3:
             case SV_SNIPER_5:
@@ -249,8 +256,14 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                 mouse_mode(false);
         }
     }
-    if (record->event.pressed) {
+    if (record->event.pressed) { // key pressed
         switch (keycode) {
+            case SV_LEFT_SCROLL_HOLD:
+		left_scroll_hold = true;
+                break;
+            case SV_RIGHT_SCROLL_HOLD:
+		right_scroll_hold = true;
+                break;
             case SV_TOGGLE_23_67:
                 layer_on(2);
                 layer_on(3);
@@ -277,8 +290,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                 snipe_y *= 5;
                 break;
         }
-    }
-    if (!record->event.pressed) {
+    } else { // key released
         switch (keycode) {
             case SV_LEFT_DPI_INC:
                 increase_left_dpi();
@@ -299,6 +311,12 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case SV_RIGHT_SCROLL_TOGGLE:
                 global_saved_values.right_scroll = !global_saved_values.right_scroll;
                 write_eeprom_kb();
+                break;
+	    case SV_LEFT_SCROLL_HOLD:
+		left_scroll_hold = false;
+                break;
+	    case SV_RIGHT_SCROLL_HOLD:
+		right_scroll_hold = false;
                 break;
             case SV_RECALIBRATE_POINTER:
                 recalibrate_pointer();
