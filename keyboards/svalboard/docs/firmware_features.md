@@ -16,7 +16,7 @@ If you move your pointing device the Svalboard will switch to Layer 15 by defaul
 
 You can exit this mode by hitting any key not mapped to a mouse button or pointing device feature.
 
-*Note:* Many of the keybindings will not work on the automouse layer, due to the way the key events are processed. A keycode must be in the following set to not exit the automouse layer (as of commit 226e1200cf826ff17ee65899a6ad0e3d3b751ee1):
+*Note:* Many of the keybindings will not work on the automouse layer, due to the way the key events are processed. A keycode must be in the following set to not exit the automouse layer (as of commit c870b94221a23b8b835dbabefaa5956ae59ecb82):
 
 ```c
         switch (keycode) {
@@ -37,6 +37,10 @@ You can exit this mode by hitting any key not mapped to a mouse button or pointi
             case KC_RALT:
             case KC_LGUI:
             case KC_RGUI:
+            case SV_LEFT_SCROLL_TOGGLE:
+            case SV_RIGHT_SCROLL_TOGGLE:
+            case SV_LEFT_SCROLL_HOLD:
+            case SV_RIGHT_SCROLL_HOLD:
             case SV_SNIPER_2:
             case SV_SNIPER_3:
             case SV_SNIPER_5:
@@ -58,8 +62,10 @@ If your mouse pointer begins to drift, try recalibrating the zero by hitting 'do
 ## Sniper mode
 [TODO]
 
-## Scroll-mode lock
-[TODO]
+## Scroll-mode lock and scroll-mode hold
+The keycodes `SV_LEFT_SCROLL_TOGGLE` and `SV_RIGHT_SCROLL_TOGGLE` switch the left or right pointing device from moving the mouse pointer to acting as a scroll wheel. When these are activated/deactivated, the state is saved in the Svalboard EEPROM. Some users with dual pointing devices like to use one side to move the pointer, and one to exclusively scroll.
+
+The keycodes `SV_LEFT_SCROLL_HOLD` and `SV_RIGHT_SCROLL_HOLD` swap the left or right pointing device to a scroll, which is only active while the key is held down. If the pointing device is already a scroll, the key will have no additional effect.
 
 ## Pointer DPI adjustment
 [TODO]
